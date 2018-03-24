@@ -1,24 +1,35 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Route,
+} from 'react-router-dom';
 
-import SignInPage from '../SignIn';
-import SignUpPage from '../SignUp';
+import Navigation from '../Navigation';
+import LandingPage from '../Landing';
+import SignUpPage from '../Registrations/SignUp';
+import SignInPage from '../Registrations/SignIn';
+import PasswordForgetPage from '../Registrations/PasswordForget';
+import HomePage from '../Home';
+import AccountPage from '../Account';
+import withAuthentication from '../Session/withAuthentication';
 import * as routes from '../../constants/routes';
 
-const App = ({ authUser }) =>
+import './index.css';
+
+const App = () =>
   <Router>
-    <div>
-      {authUser
-        ? <h1>Auth</h1>
-        : <SignInPage />
-      }
+    <div className="app">
+      {/* <Navigation /> */}
+
+      {/* <hr /> */}
+
+      <Route exact path={routes.LANDING} component={() => <Navigation />} />
+      <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
+      <Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
+      <Route exact path={routes.PASSWORD_FORGET} component={() => <PasswordForgetPage />} />
+      <Route exact path={routes.HOME} component={() => <HomePage />} />
+      <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
     </div>
   </Router>
 
-const mapStateToProps = (state) => ({
-  authUser: state.sessionState.authUser
-});
-
-export default connect(mapStateToProps)(App);
+export default withAuthentication(App);
