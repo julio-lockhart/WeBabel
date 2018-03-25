@@ -23,7 +23,7 @@ const App = () =>
 
       {/* <hr /> */}
 
-      <Route exact path={routes.LANDING} component={() => <Navigation />} />
+      <Route exact path={routes.AUTH_NAVIGATION} component={() => <Navigation />} />
       <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
       <Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
       <Route exact path={routes.PASSWORD_FORGET} component={() => <PasswordForgetPage />} />
