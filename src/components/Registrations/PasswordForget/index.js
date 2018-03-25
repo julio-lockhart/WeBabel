@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 // Resources
 import 'font-awesome/css/font-awesome.min.css';
-import { Alert } from 'reactstrap';
+import { Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import '../registrationStyle.css';
 import logo from '../img/logo.jpg';
 
@@ -20,6 +20,7 @@ const updateByPropertyName = (propertyName, value) => () => ({
 const INITIAL_STATE = {
   email: '',
   error: null,
+  message: null
 };
 
 class PasswordForgetForm extends Component {
@@ -35,6 +36,7 @@ class PasswordForgetForm extends Component {
     auth.doPasswordReset(email)
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }));
+        this.setState(updateByPropertyName('message', "A link was sent to your email, please follow the instructions in the email to reset your password."));
       })
       .catch(error => {
         this.setState(updateByPropertyName('error', error));
@@ -47,6 +49,7 @@ class PasswordForgetForm extends Component {
     const {
       email,
       error,
+      message
     } = this.state;
 
     const isInvalid = email === '';
@@ -65,27 +68,44 @@ class PasswordForgetForm extends Component {
                 <div className="card fat">
                   <div className="card-body">
                     <h4 className="card-title">Forgot Password</h4>
-                    <form method="POST">
+                    <Form onSubmit={this.onSubmit}>
 
-                      <div className="form-group">
-                        <label htmlFor="email">E-Mail Address</label>
-                        <input
+                      <FormGroup>
+                        <Label for="email">E-Mail Address</Label>
+                        <Input
                           id="email"
                           type="email"
                           className="form-control"
-                          name="email" required autoFocus />
+                          name="email"
+                          onChange={event => this.setState(updateByPropertyName('email', event.target.value))}
+                          required autoFocus />
+
                         <div className="form-text text-muted">
                           By clicking "Reset Password" we will send a password reset link
                         </div>
-                      </div>
+                      </FormGroup>
 
                       <div className="form-group no-margin">
-                        <button type="submit" className="btn btn-primary btn-block">
+                        <Button
+                          type="submit"
+                          color="primary"
+                          className="btn-block"
+                          disabled={isInvalid}>
                           Reset Password
-                        </button>
+                        </Button>
                       </div>
 
-                    </form>
+                      {error &&
+                        <Alert color="danger"
+                          className="m-3">{error.message}</Alert>
+                      }
+
+                      {message &&
+                        <Alert color="primary"
+                          className="m-3">{message}</Alert>
+                      }
+
+                    </Form>
                   </div>
                 </div>
               </div>
