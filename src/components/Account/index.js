@@ -67,6 +67,14 @@ class AccountPage extends React.Component {
                     Moar Tabs
                   </NavLink>
                 </NavItem>
+
+                <NavItem>
+                  <NavLink
+                    className={classnames({ active: this.state.activeTab === '4' })}
+                    onClick={() => { this.toggle('4'); }}>
+                    Delete Account
+                  </NavLink>
+                </NavItem>
               </Nav>
 
               <TabContent activeTab={this.state.activeTab}>
@@ -115,6 +123,14 @@ class AccountPage extends React.Component {
                         <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
                         <Button>Go somewhere</Button>
                       </Card>
+                    </Col>
+                  </Row>
+                </TabPane>
+
+                <TabPane tabId="2">
+                  <Row>
+                    <Col sm="12">
+                      <h3>Delete Account</h3>
                     </Col>
                   </Row>
                 </TabPane>
