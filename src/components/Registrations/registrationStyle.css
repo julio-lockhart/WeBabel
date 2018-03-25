@@ -5,6 +5,12 @@
     margin: 0;
 }
 
+.my-login-page_no-height {
+    background-color: #f7f9fb;
+    font-size: 14px;
+    margin: 0;
+}
+
 .my-login-page .brand {
     width: 90px;
     height: 90px;

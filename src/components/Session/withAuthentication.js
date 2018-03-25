@@ -12,8 +12,6 @@ const withAuthentication = (Component) => {
         authUser
           ? onSetAuthUser(authUser)
           : onSetAuthUser(null);
-
-        console.log("User Status Authentication:", authUser);
       });
     }
 

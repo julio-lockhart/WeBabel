@@ -13,8 +13,6 @@ const withAuthorization = (condition) => (Component) => {
         if (!condition(authUser)) {
           this.props.history.push(routes.SIGN_IN);
         }
-
-        console.log("User Status Authorization:", authUser);
       });
     }
 

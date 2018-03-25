@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom';
 
 import Navigation from '../Navigation';
-import LandingPage from '../Landing';
 import SignUpPage from '../Registrations/SignUp';
 import SignInPage from '../Registrations/SignIn';
 import PasswordForgetPage from '../Registrations/PasswordForget';
@@ -19,10 +18,6 @@ import './index.css';
 const App = () =>
   <Router>
     <div className="app">
-      {/* <Navigation /> */}
-
-      {/* <hr /> */}
-
       <Route exact path={routes.AUTH_NAVIGATION} component={() => <Navigation />} />
       <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
       <Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
