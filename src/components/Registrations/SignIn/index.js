@@ -83,6 +83,7 @@ class SignInPage extends Component {
                 console.log("From Popup", user);
 
                 db.doCreateUser(user.uid, user.displayName, user.email);
+                this.props.history.push(routes.HOME);
             })
             .catch((error) => {
                 // Handle Errors here.

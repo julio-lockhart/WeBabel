@@ -8,6 +8,7 @@ import {
 } from 'reactstrap';
 import classnames from 'classnames';
 
+import SignOut from '../Registrations/SignOut'
 import PasswordChangeForm from '../Registrations/PasswordChange';
 import withAuthorization from '../Session/withAuthorization';
 
@@ -36,6 +37,7 @@ class AccountPage extends React.Component {
       <div className="container" >
         <div className="account-profile">
           <div className="">
+
             <div className="text-center">
               <img src={this.props.authUser.photoURL} className="rounded-circle" alt="..." />
             </div>
@@ -116,8 +118,11 @@ class AccountPage extends React.Component {
                     </Col>
                   </Row>
                 </TabPane>
-
               </TabContent>
+
+              <div className="my-4 text-center">
+                <SignOut />
+              </div>
             </div>
           </div>
         </div>

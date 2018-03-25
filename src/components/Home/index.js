@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
+import SignOutButton from '../Registrations/SignOut';
 import withAuthorization from '../Session/withAuthorization';
+import * as routes from '../../constants/routes';
 import { db } from '../../firebase';
 
 class HomePage extends Component {
@@ -29,6 +32,11 @@ class HomePage extends Component {
       <div>
         <h1>Home</h1>
         <p>The Home Page is accessible by every signed in user.</p>
+        <ul>
+          <li><Link to={routes.HOME}>Home</Link></li>
+          <li><Link to={routes.ACCOUNT}>Account</Link></li>
+          <li><SignOutButton /></li>
+        </ul>
 
         {!!users && <UserList users={users} />}
       </div>
