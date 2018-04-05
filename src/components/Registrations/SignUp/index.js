@@ -11,6 +11,9 @@ import logo from '../img/logo.jpg';
 import { auth, db } from '../../../firebase';
 import * as routes from '../../../constants/routes';
 
+// API Access
+import { apiInstance } from '../../../constants/apiInstance';
+
 const updateByPropertyName = (propertyName, value) => () => ({
     [propertyName]: value,
 });
@@ -30,7 +33,7 @@ class SignUpPage extends Component {
         this.state = { ...INITIAL_STATE };
     }
 
-    onSubmit = (event) => {
+    onSubmit = async (event) => {
         const {
             username,
             email,
@@ -47,8 +50,10 @@ class SignUpPage extends Component {
                     this.setState(() => ({ ...INITIAL_STATE }));
 
                     db.doCreateUser(user.uid, user.displayName, user.email);
-
-                    history.push(routes.HOME);
+                    this.createUserOnChatkit(user.uid, user.displayName)
+                        .then((result) => {
+                            history.push(routes.HOME);
+                        });
                 }).catch(error => {
                     this.setState(updateByPropertyName('error', error));
                 });
@@ -59,6 +64,23 @@ class SignUpPage extends Component {
             });
 
         event.preventDefault();
+    };
+
+    createUserOnChatkit = async (uid, displayName) => {
+        try {
+            const res = await apiInstance({
+                method: "POST",
+                url: "/chatkit/createUser",
+                data: {
+                    id: uid,
+                    displayName
+                }
+            });
+
+            return res;
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     render() {
