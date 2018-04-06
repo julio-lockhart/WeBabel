@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@pusher/chatkit": "^0.7.8",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0",
@@ -11,9 +12,8 @@
     "express": "^4.16.3",
     "firebase": "^4.11.0",
     "font-awesome": "^4.7.0",
-    "jsonwebtoken": "^8.2.0",
+    "object-path-immutable": "^1.0.1",
     "prop-types": "^15.6.1",
-    "pusher-chatkit-client": "^0.6.2",
     "pusher-chatkit-server": "^0.10.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

@@ -24,20 +24,21 @@ router.get("/getUsers/", async (req, res) => {
 router.post("/createUser/", async (req, res) => {
     const id = req.body.id;
     const displayName = req.body.displayName;
+    const avatarUrl = req.body.avatarUrl;
 
     if (!id) throw "ID required";
     if (!displayName) throw "ID required";
 
-    await chatkitServer.createUser(id, displayName)
+    await chatkitServer.createUser(id, displayName, avatarUrl)
         .then((response) => {
             console.log('User created successfully');
             console.log(response);
 
             res.status(200).json(response);
         }).catch((err) => {
-            console.log(err);
+            console.log('Error creating user', err);
 
-            res.json(response);
+            res.status(400).json(response);
         });
 });
 
@@ -53,6 +54,30 @@ router.delete("/deleteUser/:id", async (req, res) => {
         }).catch((err) => {
             console.log(err);
             res.json(response);
+        });
+});
+
+// Deletes all the users
+router.delete("/deleteAllUsers/", async (req, res) => {
+    await chatkitServer.getUsers()
+        .then((result) => {
+
+            for (let i = 0; i < result.length; i++) {
+                console.log('Deleting user', result[i].id);
+
+                chatkitServer.deleteUser(String(result[i].id))
+                    .then((response) => {
+                        console.log('User deleted successfully');
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+            }
+
+            res.sendStatus(200);
+
+        }).catch((err) => {
+            console.log(err);
+            res.sendStatus(400);
         });
 });
 

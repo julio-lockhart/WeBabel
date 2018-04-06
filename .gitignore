@@ -1,5 +1,6 @@
 Playground/
 Lectures/
+.vscode/
 *.zip
 
 # Created by https://www.gitignore.io/api/node
