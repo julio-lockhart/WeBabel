@@ -10,6 +10,10 @@ const chatkitServer = new ChatkitServer.default({
     key: Constants.key
 });
 
+// --------------------------------------
+// User Routes
+// --------------------------------------
+
 // Returns all users
 router.get("/getUsers/", async (req, res) => {
     await chatkitServer.getUsers()
@@ -79,6 +83,59 @@ router.delete("/deleteAllUsers/", async (req, res) => {
             console.log(err);
             res.sendStatus(400);
         });
+});
+
+// --------------------------------------
+// Room Routes
+// --------------------------------------
+
+router.get("/getUserJoinableRooms/:userId", async (req, res) => {
+    const userId = req.params.userId;
+
+    if (!userId) throw "ID required";
+
+    await chatkitServer.getUserJoinableRooms(String(userId))
+        .then((result) => {
+            console.log(result);
+            res.json(result);
+        }).catch((err) => {
+            console.log(err);
+            res.json(err);
+        });
+});
+
+router.get("/getUserRooms/:userId", async (req, res) => {
+    const userId = req.params.userId;
+
+    if (!userId) throw "ID required";
+
+    await chatkitServer.getUserRooms(String(userId))
+        .then((result) => {
+            console.log(result);
+            res.json(result);
+        }).catch((err) => {
+            console.log(err);
+            res.json(err);
+        });
+});
+
+router.post("/createRoom", async (req, res) => {
+    const userId = req.body.userId;
+    const roomName = req.body.roomName;
+    const isPrivate = req.body.isPrivate ? req.body.isPrivate : false;
+    const userIds = req.body.userIds;
+
+    await chatkitServer.createRoom(String(userId), {
+        name: roomName,
+        isPrivate,
+        userIds
+    }).then(result => {
+        console.log(result);
+        res.sendStatus(200).json(result);
+    }).catch(err => {
+        console.log(err);
+        res.sendStatus(400);
+    });
 });
 
 module.exports = router;

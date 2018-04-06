@@ -4,11 +4,11 @@ import { compose } from 'recompose';
 import { set, del } from 'object-path-immutable';
 
 // Component
-import SignOutButton from '../Registrations/SignOut';
 import withAuthorization from '../Session/withAuthorization';
 
 // Chatkit
 import ChatManager from '../../chatkit';
+import UserNavbar from './UserNavbar';
 
 class ChatkitView extends React.Component {
    constructor(props) {
@@ -163,10 +163,13 @@ class ChatkitView extends React.Component {
    }
 
    render() {
+      const {
+         user
+      } = this.state;
+
       return (
          <div>
-            Main ChatkitView
-            <SignOutButton />
+            <UserNavbar user={user} />
          </div>
       );
    };
