@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { set, del } from 'object-path-immutable';
+import { Row, Col } from 'reactstrap';
 
 // Component
+import RoomList from './RoomList';
 import withAuthorization from '../Session/withAuthorization';
 
 // Chatkit
@@ -19,7 +21,8 @@ class ChatkitView extends React.Component {
          user: {},
          room: {},
          messages: {},
-         typing: {}
+         typing: {},
+         ready: false
       }
    }
 
@@ -103,7 +106,7 @@ class ChatkitView extends React.Component {
 
       setCursor: (roomId, position) =>
          this.state.user
-            .setReadCursor({ roomId, position: parseInt(position) })
+            .setReadCursor({ roomId, position: parseInt(position, 10) })
             .then(x => this.forceUpdate()),
 
       // --------------------------------------
@@ -158,18 +161,41 @@ class ChatkitView extends React.Component {
       setUserPresence: () => this.forceUpdate(),
    }
 
-   componentWillMount() {
-      ChatManager(this);
+   componentDidMount = async () => {
+      ChatManager(this).then((res) => {
+         this.setState({
+            ready: true
+         })
+      });
    }
 
    render() {
       const {
-         user
+         user,
+         room,
+         messages,
+         ready
       } = this.state;
+
+      if (!ready) {
+         return <div />
+      }
 
       return (
          <div>
             <UserNavbar user={user} />
+
+            <Row>
+               <Col md="3">
+                  <aside>
+                     <RoomList
+                        user={user}
+                        rooms={user.rooms}
+                        messages={messages} />
+                  </aside>
+               </Col>
+               <Col md="9">.col-10</Col>
+            </Row>
          </div>
       );
    };

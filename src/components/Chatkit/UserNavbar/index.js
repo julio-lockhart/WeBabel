@@ -13,44 +13,55 @@ import {
    DropdownItem
 } from 'reactstrap';
 
+import './userNavbar.css';
+
 // Component
 import SignOutButton from '../../Registrations/SignOut';
 
+import './userNavbar.css';
+
 const UserNavbar = ({ user }) => {
    return (
-      <Navbar color="light" light expand="md">
-         <NavbarBrand>WeBabel</NavbarBrand>
-         <NavbarToggler />
-         <Collapse navbar>
-            <Nav className="ml-auto" navbar>
-               <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle nav caret>
-                     <div>
-                        <img className="rounded-circle" src={user.avatarURL} alt={"Photo of " + user.name} style={{ width: '40px', height: '40px' }} />
-                        <div>{user.name}</div>
-                     </div>
-                  </DropdownToggle>
+      <div>
+         <Navbar color="light" light expand="md">
+            <NavbarBrand>WeBabel</NavbarBrand>
+            <NavbarToggler />
 
-                  <DropdownMenu right>
-                     <DropdownItem>
-                        Option 1
-                     </DropdownItem>
+            <Collapse navbar>
+               <Nav className="ml-auto" navbar>
+                  <NavItem>
+                     <NavLink>
+                        <div>
+                           <img
+                              className="avatar rounded-circle"
+                              src={user.avatarURL ? user.avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg"}
+                              alt={"Photo of " + user.name} />
+                           {user.name}
+                        </div>
+                     </NavLink>
+                  </NavItem>
 
-                     <DropdownItem>
-                        Option 2
-                     </DropdownItem>
+                  <UncontrolledDropdown nav inNavbar>
+                     <DropdownToggle className="dropdown-toggle" nav caret>
 
-                     <DropdownItem divider />
+                     </DropdownToggle>
+                     <DropdownMenu right>
+                        <DropdownItem>
+                           <NavLink>Account</NavLink>
+                        </DropdownItem>
 
-                     <DropdownItem>
-                        <SignOutButton />
-                     </DropdownItem>
-                  </DropdownMenu>
+                        <DropdownItem divider />
+                        <DropdownItem>
+                           <SignOutButton />
+                        </DropdownItem>
+                     </DropdownMenu>
+                  </UncontrolledDropdown>
 
-               </UncontrolledDropdown>
-            </Nav>
-         </Collapse>
-      </Navbar>
+               </Nav>
+            </Collapse>
+
+         </Navbar>
+      </div>
    );
 };
 
