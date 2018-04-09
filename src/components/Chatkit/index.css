@@ -1,0 +1,11 @@
+.chatkit_col-3 {
+   border-right: 1px solid lightgray;
+   padding-right: 0;
+   margin-bottom: -9999px;
+   padding-bottom: 9999px;
+}
+
+.chatkit_col-9 {
+   /* margin-bottom: -9999px;
+   padding-bottom: 9999px; */
+}

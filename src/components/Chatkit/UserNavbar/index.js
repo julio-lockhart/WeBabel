@@ -7,62 +7,100 @@ import {
    Nav,
    NavItem,
    NavLink,
-   UncontrolledDropdown,
-   DropdownToggle,
-   DropdownMenu,
-   DropdownItem
+   Button
 } from 'reactstrap';
-
-import './userNavbar.css';
 
 // Component
 import SignOutButton from '../../Registrations/SignOut';
 
-import './userNavbar.css';
+// Resources
+import './index.module.css';
 
-const UserNavbar = ({ user }) => {
-   return (
-      <div>
-         <Navbar color="light" light expand="md">
-            <NavbarBrand>WeBabel</NavbarBrand>
-            <NavbarToggler />
+class UserNavbar extends React.Component {
+   constructor(props) {
+      super(props);
 
-            <Collapse navbar>
-               <Nav className="ml-auto" navbar>
-                  <NavItem>
-                     <NavLink>
-                        <div>
-                           <img
-                              className="avatar rounded-circle"
-                              src={user.avatarURL ? user.avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg"}
-                              alt={"Photo of " + user.name} />
-                           {user.name}
-                        </div>
-                     </NavLink>
-                  </NavItem>
+      this.state = {
+         user: this.props.user,
+         collapsed: true,
+         modal: false
+      };
 
-                  <UncontrolledDropdown nav inNavbar>
-                     <DropdownToggle className="dropdown-toggle" nav caret>
+      // Binding
+      this.toggleNavbar = this.toggleNavbar.bind(this);
+   }
 
-                     </DropdownToggle>
-                     <DropdownMenu right>
-                        <DropdownItem>
-                           <NavLink>Account</NavLink>
-                        </DropdownItem>
+   // componentWillReceiveProps(newState) {
+   //    if (newState.user) {
+   //       if (this.state.user !== newState.user) {
+   //          this.setState({
+   //             user: newState.user
+   //          });
+   //       }
+   //    }
+   // }
 
-                        <DropdownItem divider />
-                        <DropdownItem>
+   // --------------------------------------
+   // toggleNavBar - launches options
+   // --------------------------------------
+   toggleNavbar() {
+      this.setState({
+         collapsed: !this.state.collapsed
+      });
+   }
+
+   render() {
+      const { user } = this.state;
+
+      return (
+         <div className="user-navbar">
+            <Navbar light>
+               <NavbarBrand className="mr-auto">
+                  <div className="display">
+                     <img
+                        className="rounded-circle avatar"
+                        src={user.avatarURL ? user.avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg"}
+                        alt={"Photo of " + user.name} />
+
+                     <span className="username h5">{user.name}</span>
+                  </div>
+               </NavbarBrand>
+
+               <NavbarBrand>
+                  <Button
+                     color="link"
+                     className="create-room_button" />
+               </NavbarBrand>
+
+               <NavbarToggler
+                  onClick={this.toggleNavbar}
+                  className="mr-2" />
+
+               <Collapse
+                  isOpen={!this.state.collapsed}
+                  navbar>
+
+                  <Nav navbar>
+                     <NavItem>
+                        <NavLink>
+                           <Button
+                              color="primary"
+                              size="lg">Account</Button>
+                        </NavLink>
+                     </NavItem>
+
+                     <NavItem>
+                        <NavLink>
                            <SignOutButton />
-                        </DropdownItem>
-                     </DropdownMenu>
-                  </UncontrolledDropdown>
+                        </NavLink>
+                     </NavItem>
+                  </Nav>
 
-               </Nav>
-            </Collapse>
-
-         </Navbar>
-      </div>
-   );
+               </Collapse>
+            </Navbar>
+         </div>
+      );
+   };
 };
 
 export default UserNavbar;

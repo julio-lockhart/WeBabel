@@ -5,12 +5,19 @@ import { set, del } from 'object-path-immutable';
 import { Row, Col } from 'reactstrap';
 
 // Component
+import UserNavbar from './UserNavbar';
 import RoomList from './RoomList';
+import RoomHeader from './RoomHeader';
+import MessageList from './MessageList';
+import CreateMessage from './CreateMessage';
+import JoinRoom from './JoinRoom';
+import CreateRoomForm from './CreateRoomForm';
 import withAuthorization from '../Session/withAuthorization';
+
+import './index.css';
 
 // Chatkit
 import ChatManager from '../../chatkit';
-import UserNavbar from './UserNavbar';
 
 class ChatkitView extends React.Component {
    constructor(props) {
@@ -114,9 +121,10 @@ class ChatkitView extends React.Component {
       // --------------------------------------
 
       addMessage: payload => {
-         const roomId = payload.room.id
-         const messageId = payload.id
-         this.setState(set(this.state, ['messages', roomId, messageId], payload))
+         const roomId = payload.room.id;
+         const messageId = payload.id;
+         this.setState(set(this.state, ['messages', roomId, messageId], payload));
+
          if (roomId === this.state.room.id) {
             const cursor = this.state.user.readCursor({ roomId }) || {}
             const cursorPosition = cursor.position || 0
@@ -177,24 +185,37 @@ class ChatkitView extends React.Component {
          ready
       } = this.state;
 
+      console.log('Room id', room.id);
+
       if (!ready) {
          return <div />
       }
 
       return (
          <div>
-            <UserNavbar user={user} />
-
             <Row>
-               <Col md="3">
-                  <aside>
-                     <RoomList
-                        user={user}
-                        rooms={user.rooms}
-                        messages={messages} />
-                  </aside>
+               <Col md="3" className="chatkit_col-3">
+                  <UserNavbar user={user} />
+                  <RoomList user={user}
+                     rooms={user.rooms}
+                     messages={messages} />
                </Col>
-               <Col md="9">.col-10</Col>
+
+               <Col md="9" className="chatkit_col-9">
+                  <RoomHeader state={this.state} actions={this.actions} />
+                  {
+                     room.id ? (
+                        <Row>
+                           <Col>
+                              <MessageList
+                                 user={user}
+                                 messages={messages[room.id]} />
+                              <CreateMessage state={this.state} actions={this.actions} />
+                           </Col>
+                        </Row>
+                     ) : <JoinRoom />
+                  }
+               </Col>
             </Row>
          </div>
       );

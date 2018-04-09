@@ -1,6 +1,13 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  overflow: hidden;
+   margin: 0;
+   padding: 0;
+   font-family: sans-serif;
+}
+
+html,
+body,
+.container {
+   height: 100%;
+   min-height: 100%;
+   overflow: hidden;
 }
