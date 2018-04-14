@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Button } from 'reactstrap';
+import { ListGroupItem } from 'reactstrap';
 import { auth } from '../../../firebase';
 
 const SignOutButton = () =>
-   <Button
+   <ListGroupItem
+      className="text-center"
       color="danger"
-      size="lg"
-      onClick={auth.doSignOut}>Log Out</Button>
+      onClick={auth.doSignOut}>Log Out</ListGroupItem>
 
 export default SignOutButton;

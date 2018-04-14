@@ -1,20 +1,39 @@
 import React from 'react';
-import {
-   Collapse,
-   Navbar,
-   NavbarToggler,
-   NavbarBrand,
-   Nav,
-   NavItem,
-   NavLink,
-   Button
-} from 'reactstrap';
+import { ButtonGroup, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap';
+import styled from 'styled-components';
 
 // Component
 import SignOutButton from '../../Registrations/SignOut';
 
-// Resources
-import './index.module.css';
+// Styled Components
+const SidebarHeader = styled.header`
+   border-bottom: 1px solid #e0e0e0;
+   z-index      : 1;
+   flex         : none;
+   display      : flex;
+   align-items  : center;
+   padding      : 1rem;
+   height       : 4.8rem;
+`;
+
+const HandleName = styled.h5`
+   font-size  : 0.8rem;
+   margin     : 0;
+   margin-top : 0.2rem;
+   font-weight: normal;
+   color      : rgba(0, 0, 0, 0.38);
+`;
+
+const UserImage = styled.img`
+   width        : 2.8rem;
+   height       : 2.8rem;
+   border-radius: 0.38rem;
+   background   : #e0e0e0;
+`;
+
+const UserOptions = styled.div`
+   margin-left: auto;
+`;
 
 class UserNavbar extends React.Component {
    constructor(props) {
@@ -22,30 +41,16 @@ class UserNavbar extends React.Component {
 
       this.state = {
          user: this.props.user,
-         collapsed: true,
-         modal: false
-      };
+         dropdownOpen: false
+      }
 
-      // Binding
-      this.toggleNavbar = this.toggleNavbar.bind(this);
+      this.toggle = this.toggle.bind(this);
    }
 
-   // componentWillReceiveProps(newState) {
-   //    if (newState.user) {
-   //       if (this.state.user !== newState.user) {
-   //          this.setState({
-   //             user: newState.user
-   //          });
-   //       }
-   //    }
-   // }
-
-   // --------------------------------------
-   // toggleNavBar - launches options
-   // --------------------------------------
-   toggleNavbar() {
+   // Toggling the dropdown
+   toggle() {
       this.setState({
-         collapsed: !this.state.collapsed
+         dropdownOpen: !this.state.dropdownOpen
       });
    }
 
@@ -53,54 +58,35 @@ class UserNavbar extends React.Component {
       const { user } = this.state;
 
       return (
-         <div className="user-navbar">
-            <Navbar light>
-               <NavbarBrand className="mr-auto">
-                  <div className="display">
-                     <img
-                        className="rounded-circle avatar"
-                        src={user.avatarURL ? user.avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg"}
-                        alt={"Photo of " + user.name} />
+         <SidebarHeader>
+            <UserImage
+               className="rounded-circle"
+               src={user.avatarURL ? user.avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg"}
+               alt={"Photo of " + user.name} />
 
-                     <span className="username h5">{user.name}</span>
-                  </div>
-               </NavbarBrand>
+            <div style={{ marginLeft: '1rem' }}>
+               <h3>{user.name}</h3>
+               <HandleName>@UserName</HandleName>
+            </div>
 
-               <NavbarBrand>
-                  <Button
-                     color="link"
-                     className="create-room_button" />
-               </NavbarBrand>
-
-               <NavbarToggler
-                  onClick={this.toggleNavbar}
-                  className="mr-2" />
-
-               <Collapse
-                  isOpen={!this.state.collapsed}
-                  navbar>
-
-                  <Nav navbar>
-                     <NavItem>
-                        <NavLink>
-                           <Button
-                              color="primary"
-                              size="lg">Account</Button>
-                        </NavLink>
-                     </NavItem>
-
-                     <NavItem>
-                        <NavLink>
+            <UserOptions>
+               <ButtonGroup >
+                  <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                     <DropdownToggle caret size="sm" />
+                     <DropdownMenu>
+                        <DropdownItem>Create a Room</DropdownItem>
+                        <DropdownItem>Account</DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem>
                            <SignOutButton />
-                        </NavLink>
-                     </NavItem>
-                  </Nav>
-
-               </Collapse>
-            </Navbar>
-         </div>
+                        </DropdownItem>
+                     </DropdownMenu>
+                  </ButtonDropdown>
+               </ButtonGroup>
+            </UserOptions>
+         </SidebarHeader>
       );
-   };
-};
+   }
+}
 
 export default UserNavbar;

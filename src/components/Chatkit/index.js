@@ -1,23 +1,65 @@
 import React from 'react';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { set, del } from 'object-path-immutable';
-import { Row, Col } from 'reactstrap';
 
 // Component
 import UserNavbar from './UserNavbar';
-import RoomList from './RoomList';
 import RoomHeader from './RoomHeader';
+import ChatMessageList from './ChatMessageList';
 import MessageList from './MessageList';
-import CreateMessage from './CreateMessage';
-import JoinRoom from './JoinRoom';
-import CreateRoomForm from './CreateRoomForm';
+import CreateMessageInput from './CreateMessageInput';
 import withAuthorization from '../Session/withAuthorization';
 
 import './index.css';
 
 // Chatkit
 import ChatManager from '../../chatkit';
+
+// Styled Components
+const Container = styled.div`
+   display    : flex;
+   height     : 100vh;
+   font-size  : 16px;
+   font-family: 'Roboto', sans-serif;
+   margin     : 0;
+`;
+
+const Main = styled.div`
+   display   : flex;
+   margin    : auto;
+   width     : 100%;
+   height    : 100%;
+   background: #fff;
+   overflow  : hidden;
+`;
+
+const SideBar = styled.aside`
+   flex          : 1 0 0;
+   display       : flex;
+   flex-direction: column;
+   border-right  : 1px solid rgba(0, 0, 0, 0.1);
+
+   @media (max-width: 700px) {
+      position  : absolute;
+      left      : 0;
+      top       : 4.8rem;
+      bottom    : 0;
+      transform : translateX(-100%);
+      transition: transform 0.2s ease-out;
+      box-shadow: 0 0 0.38rem rgba(0, 0, 0, 0.1);
+   }
+`;
+
+const ChatSection = styled.div`
+   flex          : 4 0 0;
+   width         : 100%;
+   display       : flex;
+   flex-direction: column;
+   position      : relative;
+`;
+
 
 class ChatkitView extends React.Component {
    constructor(props) {
@@ -185,39 +227,30 @@ class ChatkitView extends React.Component {
          ready
       } = this.state;
 
-      console.log('Room id', room.id);
-
       if (!ready) {
          return <div />
       }
 
       return (
-         <div>
-            <Row>
-               <Col md="3" className="chatkit_col-3">
+         <Container>
+            <Main>
+               <SideBar>
                   <UserNavbar user={user} />
-                  <RoomList user={user}
+                  <MessageList
+                     user={user}
                      rooms={user.rooms}
-                     messages={messages} />
-               </Col>
+                     messages={messages}
+                     room={room}
+                     actions={this.actions} />
+               </SideBar>
 
-               <Col md="9" className="chatkit_col-9">
-                  <RoomHeader state={this.state} actions={this.actions} />
-                  {
-                     room.id ? (
-                        <Row>
-                           <Col>
-                              <MessageList
-                                 user={user}
-                                 messages={messages[room.id]} />
-                              <CreateMessage state={this.state} actions={this.actions} />
-                           </Col>
-                        </Row>
-                     ) : <JoinRoom />
-                  }
-               </Col>
-            </Row>
-         </div>
+               <ChatSection>
+                  <RoomHeader room={room} />
+                  <ChatMessageList />
+                  <CreateMessageInput />
+               </ChatSection>
+            </Main>
+         </Container>
       );
    };
 };
