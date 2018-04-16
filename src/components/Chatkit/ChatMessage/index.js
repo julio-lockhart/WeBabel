@@ -2,26 +2,48 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-   position: relative;
+   height: 100px;
    display: flex;
-   flex: none;
-   font-size: 16px;
-   padding-top: 1rem;
-
-   img {
-      flex: none;
-      width: 2.4rem;
-      height: 2.4rem;
-      border-radius: 0.38rem;
-   }
+   flex-direction: row;
+   border-bottom: 1px solid lightgray;
+   align-items: center; 
 `;
 
+const LeftDiv = styled.div`
+   display: flex;
+   justify-content: center;
+   width: 120px;
+`;
+
+const RightDiv = styled.div`
+   flex-grow: 1;
+`;
+
+const AvatarImage = styled.img`
+   height: 50px;
+   width : 50px;
+   float : left;
+`;
 
 
 const ChatMessageList = ({ message = {}, user }) => {
 
    return (
-      <div>{message.text}</div>
+      <Container>
+         <LeftDiv>
+            <AvatarImage src="https://image.flaticon.com/icons/svg/149/149071.svg" />
+         </LeftDiv>
+
+         <RightDiv>
+            <div>
+               Details
+            </div>
+
+            <div>
+               {message.text}
+            </div>
+         </RightDiv>
+      </Container>
    );
 }
 

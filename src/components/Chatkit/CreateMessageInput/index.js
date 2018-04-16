@@ -19,7 +19,7 @@ const Container = styled.div`
 
    .input-group>input {
       flex   : 1 0 auto;
-      padding: 0;
+      padding: 8px;
    }
 `;
 

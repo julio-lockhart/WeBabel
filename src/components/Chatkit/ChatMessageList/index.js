@@ -10,8 +10,13 @@ const Container = styled.div`
    flex-direction        : column;
 
    ul {
-      overflow-y: scroll;
+      overflow-y: auto;
    }
+`;
+
+const UnorderedList = styled.div`
+   padding: 0;
+   margin: 0 16px;
 `;
 
 const ChatMessageList = ({ messages = {}, user }) => {
@@ -21,18 +26,18 @@ const ChatMessageList = ({ messages = {}, user }) => {
       .reverse()
       .map((k, id) => {
          chatMessages.push(
-            <li key={id}>
+            <div key={id}>
                {
                   <ChatMessage user={user} message={messages[k]} />
                }
-            </li>
+            </div>
          )
       });
 
    return (
       <Container>
          {
-            Object.keys(messages).length > 0 ? <ul>{chatMessages}</ul> : <div>Empty List</div>
+            Object.keys(messages).length > 0 ? <UnorderedList>{chatMessages}</UnorderedList> : <div>Empty List</div>
          }
       </Container>
    );
