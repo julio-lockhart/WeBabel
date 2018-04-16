@@ -8,7 +8,7 @@ import { set, del } from 'object-path-immutable';
 import UserNavbar from './UserNavbar';
 import RoomHeader from './RoomHeader';
 import ChatMessageList from './ChatMessageList';
-import MessageList from './MessageList';
+import RoomMessageList from './RoomMessageList';
 import CreateMessageInput from './CreateMessageInput';
 import withAuthorization from '../Session/withAuthorization';
 
@@ -236,7 +236,7 @@ class ChatkitView extends React.Component {
             <Main>
                <SideBar>
                   <UserNavbar user={user} />
-                  <MessageList
+                  <RoomMessageList
                      user={user}
                      rooms={user.rooms}
                      messages={messages}
@@ -246,7 +246,9 @@ class ChatkitView extends React.Component {
 
                <ChatSection>
                   <RoomHeader room={room} />
-                  <ChatMessageList />
+                  <ChatMessageList
+                     user={user}
+                     messages={messages[room.id]} />
                   <CreateMessageInput />
                </ChatSection>
             </Main>
