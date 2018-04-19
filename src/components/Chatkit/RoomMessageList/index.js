@@ -23,7 +23,7 @@ const RoomDetailContainer = styled.ul`
   width        : 100%;
   padding      : 0;
   margin       : 8px 0;
-  border-bottom: 1px solid #03a9f4;
+  border-bottom: 1px solid #CFD8DC;
 
   &:hover {
     background: #fafafa;
@@ -81,7 +81,8 @@ const LastSenderNameStyle = styled.span`
 const LastMessageSentStyle = styled.span`
    ${OverflowSpan};
    margin-top: 8px;
-   font-size: 0.749em;
+   font-size : 0.749em;
+   opacity   : 0.6;
 `;
 
 const RoomMessageList = ({ rooms = [], user, messages, room, actions }) => {

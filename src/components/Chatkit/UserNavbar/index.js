@@ -10,6 +10,7 @@ import styled from "styled-components";
 
 // Component
 import SignOutButton from "../../Registrations/SignOut";
+import ModalExample from "../CreateRoomForm";
 
 // Styled Components
 const SidebarHeader = styled.header`
@@ -46,10 +47,12 @@ class UserNavbar extends React.Component {
 
       this.state = {
          user: this.props.user,
-         dropdownOpen: false
+         dropdownOpen: false,
+         showModal: false
       };
 
       this.toggle = this.toggle.bind(this);
+      this.toggleModal = this.toggleModal.bind(this);
    }
 
    // Toggling the dropdown
@@ -59,41 +62,53 @@ class UserNavbar extends React.Component {
       });
    }
 
+   toggleModal() {
+      this.setState({
+         showModal: !this.state.showModal
+      });
+   }
+
    render() {
       const { user } = this.state;
 
       return (
-         <SidebarHeader>
-            <UserImage
-               className="rounded-circle"
-               src={
-                  user.avatarURL
-                     ? user.avatarURL
-                     : "https://image.flaticon.com/icons/svg/149/149071.svg"
-               }
-               alt={"Photo of " + user.name} />
+         <div>
+            <SidebarHeader>
+               <UserImage
+                  className="rounded-circle"
+                  src={
+                     user.avatarURL
+                        ? user.avatarURL
+                        : "https://image.flaticon.com/icons/svg/149/149071.svg"
+                  }
+                  alt={"Photo of " + user.name} />
 
-            <UserName>{user.name}</UserName>
+               <UserName>{user.name}</UserName>
 
-            <UserOptions>
-               <ButtonGroup>
-                  <ButtonDropdown
-                     isOpen={this.state.dropdownOpen}
-                     toggle={this.toggle}
-                  >
-                     <DropdownToggle caret size="sm" />
-                     <DropdownMenu>
-                        <DropdownItem>Create a Room</DropdownItem>
-                        <DropdownItem>Account</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>
-                           <SignOutButton />
-                        </DropdownItem>
-                     </DropdownMenu>
-                  </ButtonDropdown>
-               </ButtonGroup>
-            </UserOptions>
-         </SidebarHeader>
+               <UserOptions>
+                  <ButtonGroup>
+                     <ButtonDropdown
+                        isOpen={this.state.dropdownOpen}
+                        toggle={this.toggle}
+                     >
+                        <DropdownToggle caret size="sm" />
+                        <DropdownMenu>
+                           <DropdownItem onClick={this.toggleModal}>Create a Room</DropdownItem>
+                           <DropdownItem>Account</DropdownItem>
+                           <DropdownItem divider />
+                           <DropdownItem>
+                              <SignOutButton />
+                           </DropdownItem>
+                        </DropdownMenu>
+                     </ButtonDropdown>
+                  </ButtonGroup>
+               </UserOptions>
+            </SidebarHeader>
+
+            {
+               this.state.showModal ? <ModalExample isOpen={this.state.showModal} /> : null
+            }
+         </div>
       );
    }
 }
