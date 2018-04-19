@@ -10,7 +10,7 @@ import styled from "styled-components";
 
 // Component
 import SignOutButton from "../../Registrations/SignOut";
-import ModalExample from "../CreateRoomForm";
+import CreateRoomForm from "../CreateRoomForm";
 
 // Styled Components
 const SidebarHeader = styled.header`
@@ -106,7 +106,11 @@ class UserNavbar extends React.Component {
             </SidebarHeader>
 
             {
-               this.state.showModal ? <ModalExample isOpen={this.state.showModal} /> : null
+               this.state.showModal ?
+                  <CreateRoomForm
+                     isOpen={this.state.showModal}
+                     user={user}
+                     createRoom={this.props.createRoom} /> : null
             }
          </div>
       );

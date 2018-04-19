@@ -220,6 +220,7 @@ class ChatkitView extends React.Component {
 
    render() {
       const { user, room, messages, ready } = this.state;
+      const { createRoom, createConvo, removeUserFromRoom } = this.actions;
 
       if (!ready) {
          return <div />;
@@ -229,7 +230,9 @@ class ChatkitView extends React.Component {
          <Container>
             <Main>
                <SideBar>
-                  <UserNavbar user={user} />
+                  <UserNavbar
+                     user={user}
+                     createRoom={createRoom} />
                   <RoomMessageList
                      user={user}
                      rooms={user.rooms}

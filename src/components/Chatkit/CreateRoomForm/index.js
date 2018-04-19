@@ -1,34 +1,171 @@
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, FormText, Label, Input } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, FormText, Label, Input, Table } from 'reactstrap';
 
 // API
 import { db } from "../../../firebase/";
 
-const FoundUserResult = ({ searchedUser }) => {
-   return (
-      <div>
-         <h3>Found User:</h3>
 
-         <p>{searchedUser.email} - {searchedUser.name}</p>
-      </div>
-   );
+///////////////////////////////////////////////
+///
+/// This component is used to populate a table
+/// of the users who will be added to the table.
+///
+///////////////////////////////////////////////
+
+class FoundUserResult extends React.Component {
+   constructor(props) {
+      super(props);
+
+      this.state = {
+         searchedUser: this.props.searchedUser,
+         userList: []
+      }
+
+      this.addUserToList = this.addUserToList.bind(this);
+   }
+
+   // Used to update the searchedUser object
+   componentWillReceiveProps(prevProps) {
+      if (this.state.searchedUser.id !== prevProps.searchedUser.id) {
+         this.setState({
+            searchedUser: prevProps.searchedUser
+         });
+      }
+   }
+
+   // Add user to userList
+   addUserToList() {
+      const { searchedUser } = this.state;
+
+      this.setState(prevState => ({
+         userList: [...prevState.userList, searchedUser]
+      }));
+
+      this.props.updateUserList(searchedUser);
+   };
+
+   render() {
+      const { searchedUser, userList } = this.state;
+
+      let tableRow = [];
+      userList.forEach((user, idx) => {
+         let index = idx + 1;
+
+         tableRow.push(
+            <tr key={idx}>
+               <th scope="row">{index}</th>
+               <td>{user.username}</td>
+               <td>{user.email}</td>
+            </tr>
+         );
+      });
+
+      return (
+         <div className="my-3">
+            <div>
+               <p className="h3">Found User:</p>
+               <p className="h5">{searchedUser.email} - {searchedUser.username}</p>
+               <Button
+                  color="info"
+                  onClick={this.addUserToList}>Add User</Button>
+            </div>
+
+            {
+               userList.length > 0 ?
+                  (
+                     <div className="my-5">
+                        <p className="h4">User List:</p>
+                        <Table responsive>
+                           <thead>
+                              <tr>
+                                 <th>#</th>
+                                 <th>User Name</th>
+                                 <th>Email</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {
+                                 tableRow
+                              }
+                           </tbody>
+                        </Table>
+                     </div>
+                  ) : null
+            }
+         </div>
+      );
+   }
 };
 
-class ModalExample extends React.Component {
+///////////////////////////////////////////////
+///
+/// This component is used to create a room.
+///
+///////////////////////////////////////////////
+
+class CreateRoomForm extends React.Component {
    constructor(props) {
       super(props);
 
       this.state = {
          modal: true,
+         roomName: "",
          email: "",
-         searchedUser: {},
+         searchedUser: null,
+         userList: [],
          errorMsg: ""
       };
 
-      this.toggle = this.toggle.bind(this);
+      this.toggleModal = this.toggleModal.bind(this);
+      this.updateUserList = this.updateUserList.bind(this);
    }
 
-   toggle() {
+   toggleModal() {
+      this.setState({
+         modal: !this.state.modal
+      });
+   };
+
+   createRoom = async (e) => {
+      e.preventDefault();
+
+      const { user, createRoom } = this.props;
+      const { roomName, userList } = this.state;
+
+      let userIds = userList.forEach(user => {
+         return user.id
+      });
+
+      // let createRoomResponse = null;
+      // let joinRoomResponse = null;
+
+      // // Create Room
+      // try {
+      //    createRoomResponse = await user.createRoom({
+      //       name: roomName,
+      //       private: true,
+      //       addUserIds: userIds
+      //    });
+      // } catch (err) {
+      //    console.log(`Error: ${err}`);
+      // }
+
+      // // Join Room
+      // try {
+      //    joinRoomResponse = await user.joinRoom({
+      //       roomId: createRoomResponse.id
+      //    });
+      // } catch (err) {
+      //    console.log(`Error: ${err}`);
+      // }
+
+      createRoom({
+         name: roomName,
+         private: true,
+         addUserIds: userIds
+      });
+
+      // Close Modal
       this.setState({
          modal: !this.state.modal
       });
@@ -40,6 +177,18 @@ class ModalExample extends React.Component {
       });
    };
 
+   onRoomNameChange = event => {
+      this.setState({
+         roomName: event.target.value
+      });
+   };
+
+   updateUserList(param) {
+      this.setState(prevState => ({
+         userList: [...prevState.userList, param]
+      }));
+   }
+
    onSubmit = async (e) => {
       e.preventDefault();
 
@@ -47,7 +196,9 @@ class ModalExample extends React.Component {
 
       await db.getUserByEmail(email)
          .then(result => {
-            console.log('cb', result);
+            this.setState({
+               email: ""
+            });
 
             Object.keys(result).map(k => {
                this.setState({
@@ -57,44 +208,63 @@ class ModalExample extends React.Component {
                      username: result[k].username
                   }
                });
-            })
-
-
+            });
          })
          .catch(err => console.log(err));
    };
 
    render() {
-      const { searchedUser } = this.state;
+      const { searchedUser, userList, roomName } = this.state;
+      const isValid = roomName && userList.length > 0;
 
       return (
          <div>
-            <Modal isOpen={this.state.modal} toggle={this.toggle}>
-               <ModalHeader toggle={this.toggle}>Create a room</ModalHeader>
+            <Modal
+               isOpen={this.state.modal}
+               toggle={this.toggleModal}>
+
+               <ModalHeader toggle={this.toggleModal}>Create a room</ModalHeader>
                <ModalBody>
                   <Form onSubmit={this.onSubmit}>
                      <FormGroup>
-                        <Label for="exampleEmail">Search User by Email</Label>
+                        <Label for="roomNameInput">Room Name</Label>
                         <Input
-                           type="email"
-                           name="email"
-                           id="exampleEmail"
-                           placeholder="Enter an Email Address"
-                           value={this.state.email}
-                           onChange={this.onEmailChange} />
+                           type="text"
+                           name="roomName"
+                           id="roomNameInput"
+                           placeholder="Enter a name for a room"
+                           value={this.state.roomName}
+                           onChange={this.onRoomNameChange} />
+
+                        <div className="my-3">
+                           <Label for="emailInput">Search User by Email</Label>
+                           <Input
+                              type="email"
+                              name="email"
+                              id="emailInput"
+                              placeholder="Enter an Email Address"
+                              value={this.state.email}
+                              onChange={this.onEmailChange} />
+                        </div>
                      </FormGroup>
                      <Button color="primary">Search</Button>
 
                      <FormText>
                         {
-                           searchedUser ? <FoundUserResult searchedUser={searchedUser} /> : null
+                           searchedUser ? <FoundUserResult searchedUser={searchedUser} updateUserList={this.updateUserList} /> : null
                         }
                      </FormText>
                   </Form>
                </ModalBody>
                <ModalFooter>
-                  <Button color="primary" onClick={this.toggle}>Create Room</Button>{' '}
-                  <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                  <Button
+                     color="success"
+                     onClick={this.createRoom}
+                     disabled={!isValid}>Create Room</Button>{' '}
+
+                  <Button
+                     color="secondary"
+                     onClick={this.toggleModal}>Cancel</Button>
                </ModalFooter>
             </Modal>
          </div>
@@ -102,4 +272,4 @@ class ModalExample extends React.Component {
    }
 }
 
-export default ModalExample;
+export default CreateRoomForm;
