@@ -19,244 +19,244 @@ import ChatManager from "../../chatkit";
 
 // Styled Components
 const Container = styled.div`
-  display: flex;
-  height: 100vh;
-  font-size: 16px;
+  display    : flex;
+  height     : 100vh;
+  font-size  : 16px;
   font-family: "Roboto", sans-serif;
-  margin: 0;
+  margin     : 0;
 `;
 
 const Main = styled.div`
-  display: flex;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  overflow: hidden;
+  display   : flex;
+  margin    : auto;
+  width     : 100%;
+  height    : 100%;
+  overflow  : hidden;
 `;
 
 const SideBar = styled.aside`
-  flex: 1 0 0;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  width           : 360px;
+  display         : flex;
+  flex-direction  : column;
+  border-right    : 1px solid rgba(0, 0, 0, 0.1);
 
   @media (max-width: 700px) {
-    position: absolute;
-    left: 0;
-    top: 4.8rem;
-    bottom: 0;
-    transform: translateX(-100%);
+    position  : absolute;
+    left      : 0;
+    top       : 4.8rem;
+    bottom    : 0;
+    transform : translateX(-100%);
     transition: transform 0.2s ease-out;
     box-shadow: 0 0 0.38rem rgba(0, 0, 0, 0.1);
   }
 `;
 
 const ChatSection = styled.div`
-  flex: 4 0 0;
-  width: 100%;
-  display: flex;
+  flex          : 1 0 0;
+  width         : 100%;
+  display       : flex;
   flex-direction: column;
-  position: relative;
+  position      : relative;
+  background-color: #FAFAFA;
 `;
 
 class ChatkitView extends React.Component {
-  constructor(props) {
-    super(props);
+   constructor(props) {
+      super(props);
 
-    this.state = {
-      authUser: props.authUser,
-      user: {},
-      room: {},
-      messages: {},
-      typing: {},
-      ready: false
-    };
-  }
+      this.state = {
+         authUser: props.authUser,
+         user: {},
+         room: {},
+         messages: {},
+         typing: {},
+         ready: false
+      };
+   }
 
-  actions = {
-    // --------------------------------------
-    // UI
-    // --------------------------------------
+   actions = {
+      // --------------------------------------
+      // UI
+      // --------------------------------------
 
-    setSidebar: sidebarOpen => this.setState({ sidebarOpen }),
-    setUserList: userListOpen => this.setState({ userListOpen }),
+      setSidebar: sidebarOpen => this.setState({ sidebarOpen }),
+      setUserList: userListOpen => this.setState({ userListOpen }),
 
-    // --------------------------------------
-    // User
-    // --------------------------------------
+      // --------------------------------------
+      // User
+      // --------------------------------------
 
-    setUser: user => this.setState({ user }),
+      setUser: user => this.setState({ user }),
 
-    // --------------------------------------
-    // Room
-    // --------------------------------------
+      // --------------------------------------
+      // Room
+      // --------------------------------------
 
-    setRoom: room => {
-      this.setState({ room, sidebarOpen: false });
-      this.actions.scrollToEnd();
-    },
+      setRoom: room => {
+         this.setState({ room, sidebarOpen: false });
+         this.actions.scrollToEnd();
+      },
 
-    removeRoom: room => this.setState({ room: {} }),
+      removeRoom: room => this.setState({ room: {} }),
 
-    joinRoom: room => {
-      this.actions.setRoom(room);
-      this.actions.subscribeToRoom(room);
-      this.state.messages[room.id] &&
-        this.actions.setCursor(
-          room.id,
-          Object.keys(this.state.messages[room.id]).pop()
-        );
-    },
+      joinRoom: room => {
+         this.actions.setRoom(room);
+         this.actions.subscribeToRoom(room);
+         this.state.messages[room.id] &&
+            this.actions.setCursor(
+               room.id,
+               Object.keys(this.state.messages[room.id]).pop()
+            );
+      },
 
-    subscribeToRoom: room =>
-      !this.state.user.roomSubscriptions[room.id] &&
-      this.state.user.subscribeToRoom({
-        roomId: room.id,
-        hooks: { onNewMessage: this.actions.addMessage }
-      }),
+      subscribeToRoom: room =>
+         !this.state.user.roomSubscriptions[room.id] &&
+         this.state.user.subscribeToRoom({
+            roomId: room.id,
+            hooks: { onNewMessage: this.actions.addMessage }
+         }),
 
-    createRoom: options =>
-      this.state.user.createRoom(options).then(this.actions.joinRoom),
+      createRoom: options =>
+         this.state.user.createRoom(options).then(this.actions.joinRoom),
 
-    createConvo: options => {
-      if (options.user.id !== this.state.user.id) {
-        const exists = this.state.user.rooms.find(
-          x =>
-            x.name === options.user.id + this.state.user.id ||
-            x.name === this.state.user.id + options.user.id
-        );
-        exists
-          ? this.actions.joinRoom(exists)
-          : this.actions.createRoom({
-              name: this.state.user.id + options.user.id,
-              addUserIds: [options.user.id],
-              private: true
-            });
-      }
-    },
+      createConvo: options => {
+         if (options.user.id !== this.state.user.id) {
+            const exists = this.state.user.rooms.find(
+               x =>
+                  x.name === options.user.id + this.state.user.id ||
+                  x.name === this.state.user.id + options.user.id
+            );
+            exists
+               ? this.actions.joinRoom(exists)
+               : this.actions.createRoom({
+                  name: this.state.user.id + options.user.id,
+                  addUserIds: [options.user.id],
+                  private: true
+               });
+         }
+      },
 
-    addUserToRoom: ({ userId, roomId = this.state.room.id }) =>
-      this.state.user
-        .addUserToRoom({ userId, roomId })
-        .then(this.actions.setRoom),
-
-    removeUserFromRoom: ({ userId, roomId = this.state.room.id }) =>
-      userId === this.state.user.id
-        ? this.state.user.leaveRoom({ roomId })
-        : this.state.user
-            .removeUserFromRoom({ userId, roomId })
+      addUserToRoom: ({ userId, roomId = this.state.room.id }) =>
+         this.state.user
+            .addUserToRoom({ userId, roomId })
             .then(this.actions.setRoom),
 
-    // --------------------------------------
-    // Cursors
-    // --------------------------------------
+      removeUserFromRoom: ({ userId, roomId = this.state.room.id }) =>
+         userId === this.state.user.id
+            ? this.state.user.leaveRoom({ roomId })
+            : this.state.user
+               .removeUserFromRoom({ userId, roomId })
+               .then(this.actions.setRoom),
 
-    setCursor: (roomId, position) =>
-      this.state.user
-        .setReadCursor({ roomId, position: parseInt(position, 10) })
-        .then(x => this.forceUpdate()),
+      // --------------------------------------
+      // Cursors
+      // --------------------------------------
 
-    // --------------------------------------
-    // Messages
-    // --------------------------------------
+      setCursor: (roomId, position) =>
+         this.state.user
+            .setReadCursor({ roomId, position: parseInt(position, 10) })
+            .then(x => this.forceUpdate()),
 
-    addMessage: payload => {
-      const roomId = payload.room.id;
-      const messageId = payload.id;
-      this.setState(set(this.state, ["messages", roomId, messageId], payload));
+      // --------------------------------------
+      // Messages
+      // --------------------------------------
 
-      if (roomId === this.state.room.id) {
-        const cursor = this.state.user.readCursor({ roomId }) || {};
-        const cursorPosition = cursor.position || 0;
-        cursorPosition < messageId && this.actions.setCursor(roomId, messageId);
-        this.actions.scrollToEnd();
-      }
-    },
+      addMessage: payload => {
+         const roomId = payload.room.id;
+         const messageId = payload.id;
+         this.setState(set(this.state, ["messages", roomId, messageId], payload));
 
-    runCommand: command => {
-      const commands = {
-        invite: ([userId]) => this.actions.addUserToRoom({ userId }),
-        remove: ([userId]) => this.actions.removeUserFromRoom({ userId }),
-        leave: ([userId]) =>
-          this.actions.removeUserFromRoom({ userId: this.state.user.id })
-      };
-      const name = command.split(" ")[0];
-      const args = command.split(" ").slice(1);
-      const exec = commands[name];
-      exec && exec(args).catch(console.log);
-    },
+         if (roomId === this.state.room.id) {
+            const cursor = this.state.user.readCursor({ roomId }) || {};
+            const cursorPosition = cursor.position || 0;
+            cursorPosition < messageId && this.actions.setCursor(roomId, messageId);
+            this.actions.scrollToEnd();
+         }
+      },
 
-    scrollToEnd: e =>
-      setTimeout(() => {
-        const elem = document.querySelector("#messages");
-        elem && (elem.scrollTop = 100000);
-      }, 0),
+      runCommand: command => {
+         const commands = {
+            invite: ([userId]) => this.actions.addUserToRoom({ userId }),
+            remove: ([userId]) => this.actions.removeUserFromRoom({ userId }),
+            leave: ([userId]) =>
+               this.actions.removeUserFromRoom({ userId: this.state.user.id })
+         };
+         const name = command.split(" ")[0];
+         const args = command.split(" ").slice(1);
+         const exec = commands[name];
+         exec && exec(args).catch(console.log);
+      },
 
-    // --------------------------------------
-    // Typing Indicators
-    // --------------------------------------
+      scrollToEnd: e =>
+         setTimeout(() => {
+            const elem = document.querySelector("#messages");
+            elem && (elem.scrollTop = 100000);
+         }, 0),
 
-    isTyping: (room, user) =>
-      this.setState(set(this.state, ["typing", room.id, user.id], true)),
+      // --------------------------------------
+      // Typing Indicators
+      // --------------------------------------
 
-    notTyping: (room, user) =>
-      this.setState(del(this.state, ["typing", room.id, user.id])),
+      isTyping: (room, user) =>
+         this.setState(set(this.state, ["typing", room.id, user.id], true)),
 
-    // --------------------------------------
-    // Presence
-    // --------------------------------------
+      notTyping: (room, user) =>
+         this.setState(del(this.state, ["typing", room.id, user.id])),
 
-    setUserPresence: () => this.forceUpdate()
-  };
+      // --------------------------------------
+      // Presence
+      // --------------------------------------
 
-  componentDidMount = async () => {
-    ChatManager(this).then(res => {
-      this.setState({
-        ready: true
+      setUserPresence: () => this.forceUpdate()
+   };
+
+   componentDidMount = async () => {
+      ChatManager(this).then(res => {
+         this.setState({
+            ready: true
+         });
       });
-    });
-  };
+   };
 
-  render() {
-    const { user, room, messages, ready } = this.state;
+   render() {
+      const { user, room, messages, ready } = this.state;
 
-    if (!ready) {
-      return <div />;
-    }
+      if (!ready) {
+         return <div />;
+      }
 
-    return (
-      <Container>
-        <Main>
-          <SideBar>
-            <UserNavbar user={user} />
-            <RoomMessageList
-              user={user}
-              rooms={user.rooms}
-              messages={messages}
-              room={room}
-              actions={this.actions}
-            />
-          </SideBar>
+      return (
+         <Container>
+            <Main>
+               <SideBar>
+                  <UserNavbar user={user} />
+                  <RoomMessageList
+                     user={user}
+                     rooms={user.rooms}
+                     messages={messages}
+                     room={room}
+                     actions={this.actions}
+                  />
+               </SideBar>
 
-          <ChatSection>
-            <RoomHeader room={room} />
-            <ChatMessageList user={user} messages={messages[room.id]} />
-            <CreateMessageInput user={user} room={room} />
-          </ChatSection>
-        </Main>
-      </Container>
-    );
-  }
+               <ChatSection>
+                  <RoomHeader room={room} />
+                  <ChatMessageList user={user} messages={messages[room.id]} />
+                  <CreateMessageInput user={user} room={room} />
+               </ChatSection>
+            </Main>
+         </Container>
+      );
+   }
 }
 
 const mapStateToProps = state => ({
-  authUser: state.sessionState.authUser
+   authUser: state.sessionState.authUser
 });
 
 const authCondition = authUser => !!authUser;
 
 export default compose(
-  withAuthorization(authCondition),
-  connect(mapStateToProps)
+   withAuthorization(authCondition),
+   connect(mapStateToProps)
 )(ChatkitView);
