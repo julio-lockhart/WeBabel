@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ButtonGroup, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap';
+import { Button, ButtonGroup, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -36,14 +36,24 @@ class RoomHeader extends Component {
       });
    }
 
+   componentDidUpdate(prevProps) {
+      if (prevProps.room.id !== this.state.room.id) {
+         this.setState({
+            room: prevProps.room
+         });
+      }
+   }
+
    render() {
       const { room } = this.state;
+      console.log(room.users);
 
       return (
          <Container>
             <Title>{room.name}</Title>
 
             <ButtonGroup >
+               <Button>1</Button>
                <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                   <DropdownToggle caret size="sm" />
                   <DropdownMenu>

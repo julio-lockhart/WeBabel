@@ -55,19 +55,24 @@ const MessageText = styled.div`
   color           : ${props => props.isCurrentUser === true ? 'white' : 'black'};
 `;
 
-const ChatMessageList = ({ message = {}, user }) => {
-   //console.log(message);
+const PresenceIndicator = styled.div`
+   display              : inline-block;
+   width                : 8px;
+   height               : 8px;
+   -moz-border-radius   : 8px;
+   -webkit-border-radius: 8px;
+   border-radius        : 8px;
+   margin-bottom        : 1px;
+   
+   background           : ${props => props.isUserOnline ? 'green' : 'gray'};
+`;
 
+const ChatMessageList = ({ message = {}, user }) => {
    const messageTimeStamp = message.createdAt;
    const senderId = message.senderId;
    const senderImage = message.userStore.store.store[senderId].avatarURL;
    const senderName = message.userStore.store.store[senderId].name;
-
-   //console.log(messageTimeStamp, senderId, senderImage, senderName);
-   //console.log(message);
-   //console.log(user);
-   //console.log("Same user", user.id === message.senderId);
-
+   const isUserOnline = message.sender.presence.state === 'online' ? true : false;
    const isCurrentUser = user.id === message.senderId;
 
    return (
@@ -85,9 +90,23 @@ const ChatMessageList = ({ message = {}, user }) => {
 
          <MessageContainer>
             <MessageDetails isCurrentUser={isCurrentUser}>
+
+               {
+                  !isCurrentUser ? (<PresenceIndicator
+                     className="mx-2"
+                     isUserOnline={isUserOnline} />) : null
+               }
+
                {senderName}
                <span>{" | "}</span>
                <Moment format="LLL">{messageTimeStamp}</Moment>
+
+               {
+                  isCurrentUser ? (<PresenceIndicator
+                     className="mx-2"
+                     isUserOnline={isUserOnline} />) : null
+               }
+
             </MessageDetails>
 
             <MessageText isCurrentUser={isCurrentUser}>{message.text}</MessageText>

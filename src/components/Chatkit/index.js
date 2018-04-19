@@ -8,6 +8,7 @@ import { set, del } from "object-path-immutable";
 import UserNavbar from "./UserNavbar";
 import RoomHeader from "./RoomHeader";
 import ChatMessageList from "./ChatMessageList";
+import RoomUserList from "./RoomUserList";
 import RoomMessageList from "./RoomMessageList";
 import CreateMessageInput from "./CreateMessageInput";
 import withAuthorization from "../Session/withAuthorization";
@@ -52,11 +53,11 @@ const SideBar = styled.aside`
 `;
 
 const ChatSection = styled.div`
-  flex          : 1 0 0;
-  width         : 100%;
-  display       : flex;
-  flex-direction: column;
-  position      : relative;
+  flex            : 1 0 0;
+  width           : 100%;
+  display         : flex;
+  flex-direction  : column;
+  position        : relative;
   background-color: #FAFAFA;
 `;
 
@@ -226,6 +227,8 @@ class ChatkitView extends React.Component {
          return <div />;
       }
 
+      console.log('test', room.users[0].presence);
+
       return (
          <Container>
             <Main>
@@ -247,6 +250,8 @@ class ChatkitView extends React.Component {
                   <ChatMessageList user={user} messages={messages[room.id]} />
                   <CreateMessageInput user={user} room={room} />
                </ChatSection>
+
+               <RoomUserList room={room} />
             </Main>
          </Container>
       );

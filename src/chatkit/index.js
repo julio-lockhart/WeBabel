@@ -45,6 +45,8 @@ export default async ({ state, actions }) => {
 };
 
 export const createUserOnChatkit = async (uid, displayName, avatarUrl = '') => {
+   avatarUrl === '' ? "https://image.flaticon.com/icons/svg/149/149071.svg" : avatarUrl;
+
    try {
       const res = await apiInstance({
          method: "POST",
