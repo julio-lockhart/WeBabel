@@ -64,7 +64,7 @@ const PresenceIndicator = styled.div`
    border-radius        : 8px;
    margin-bottom        : 1px;
    
-   background           : ${props => props.isUserOnline ? 'green' : 'gray'};
+   background           : ${props => props.isUserOnline ? 'lightgreen' : 'gray'};
 `;
 
 const ChatMessageList = ({ message = {}, user }) => {

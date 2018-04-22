@@ -145,8 +145,6 @@ class ChatkitView extends React.Component {
                   });
 
                   if (this.state.room.id === room.id) {
-                     console.log("updating");
-
                      this.setState({
                         room
                      });

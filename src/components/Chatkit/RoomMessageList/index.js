@@ -83,7 +83,6 @@ const RoomMessageList = ({ rooms = [], user, messages, room, actions }) => {
 
          roomHeaders.push(
             <RoomMessageListItem key={room.id} roomDetail={roomDetail} actions={actions} />
-
          );
 
       } else {

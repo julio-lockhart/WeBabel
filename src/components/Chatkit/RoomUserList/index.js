@@ -55,7 +55,7 @@ const PresenceIndicator = styled.div`
    margin-right         : 16px;
    float                : right;
    
-   background           : ${props => props.isUserOnline ? 'green' : 'gray'};
+   background           : ${props => props.isUserOnline ? 'lightgreen' : 'gray'};
 `;
 
 const RoomUserList = ({ room }) => {

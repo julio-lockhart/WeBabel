@@ -178,7 +178,7 @@ class CreateRoomForm extends React.Component {
                email: ""
             });
 
-            Object.keys(result).map(k => {
+            Object.keys(result).forEach(k => {
                this.setState({
                   searchedUser: {
                      id: k,
