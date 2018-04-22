@@ -27,8 +27,6 @@ class CreateMessageInput extends React.Component {
       super(props);
 
       this.state = {
-         user: this.props.user,
-         room: this.props.room,
          message: ""
       };
 
@@ -44,7 +42,8 @@ class CreateMessageInput extends React.Component {
    onSubmit = e => {
       e.preventDefault();
 
-      const { user, room, message } = this.state;
+      const { message } = this.state;
+      const { user, room } = this.props;
 
       user.sendMessage({
          text: message,
@@ -57,6 +56,9 @@ class CreateMessageInput extends React.Component {
    };
 
    render() {
+
+      const { user, room } = this.props;
+
       return (
          <Container>
             <Form onSubmit={this.onSubmit}>
@@ -64,13 +66,14 @@ class CreateMessageInput extends React.Component {
                   <Input
                      placeholder="Send a Message..."
                      type="text"
+                     onInput={e => user.isTypingIn({ roomId: room.id })}
                      value={this.state.message}
                      onChange={this.onMessageChange}
                   />
                   <InputGroupAddon addonType="prepend">
                      <Button color="primary" type="submit">
                         Submit
-              </Button>
+                     </Button>
                   </InputGroupAddon>
                </InputGroup>
             </Form>

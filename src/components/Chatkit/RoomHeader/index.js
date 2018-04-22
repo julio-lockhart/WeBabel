@@ -17,16 +17,22 @@ const Title = styled.div`
    margin: auto;
 `;
 
+const TypingIndicatorText = styled.div`
+   font-size : 0.7rem;
+   color     : rgba(0, 0, 0, 0.38);
+`;
+
 class RoomHeader extends Component {
    constructor(props) {
       super(props);
 
       this.state = {
-         room: this.props.room,
          dropdownOpen: false
       }
 
       this.toggle = this.toggle.bind(this);
+      this.onDeleteRoomBtnClick = this.onDeleteRoomBtnClick.bind(this);
+      this.onLeaveRoomBtnClick = this.onLeaveRoomBtnClick.bind(this);
    }
 
    // Toggling the dropdown
@@ -36,29 +42,71 @@ class RoomHeader extends Component {
       });
    }
 
-   componentDidUpdate(prevProps) {
-      if (prevProps.room.id !== this.state.room.id) {
-         this.setState({
-            room: prevProps.room
-         });
+   onDeleteRoomBtnClick() {
+      const { user, room } = this.props;
+
+      try {
+         user.deleteRoom({ roomId: room.id })
+            .then(() => {
+               console.log(`Deleted room with ID: ${room.id}`);
+            })
+            .catch(err => {
+               console.log(`Error deleted room ${room.id}: ${err}`)
+            });
+      } catch (err) {
+         console.log("Error deleting room", err);
       }
    }
 
+   onLeaveRoomBtnClick() {
+      const { actions } = this.props;
+      actions.runCommand("leave");
+   }
+
    render() {
-      const { room } = this.state;
-      console.log(room.users);
+      const { room, typing } = this.props;
+
+      let userIsTyping = "";
+      if (typing[room.id]) {
+         const id = Object.keys(typing[room.id])[0];
+         room.users.forEach(user => {
+            if (user.id === (id)) {
+               userIsTyping = user.name;
+            }
+         });
+      } else {
+         userIsTyping = "";
+      }
 
       return (
          <Container>
-            <Title>{room.name}</Title>
+            <Title>
+               <div>{room.name}</div>
+               {
+                  userIsTyping !== "" ?
+                     <TypingIndicatorText className="text-center">{`${userIsTyping} is typing...`}</TypingIndicatorText> :
+                     null
+               }
+            </Title>
 
             <ButtonGroup >
-               <Button>1</Button>
+               <Button>
+                  {
+                     room.users && room.users.length
+                  }
+               </Button>
                <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                   <DropdownToggle caret size="sm" />
                   <DropdownMenu>
                      <DropdownItem>Add a User</DropdownItem>
-                     <DropdownItem style={{ color: 'red' }}>Leave Chat</DropdownItem>
+                     <DropdownItem
+                        style={{ color: 'red' }}
+                        onClick={this.onLeaveRoomBtnClick}>Leave Chat
+                     </DropdownItem>
+                     {/* <DropdownItem
+                        style={{ color: 'red' }}
+                        onClick={this.onDeleteRoomBtnClick}>Delete Room
+                     </DropdownItem> */}
                   </DropdownMenu>
                </ButtonDropdown>
             </ButtonGroup>

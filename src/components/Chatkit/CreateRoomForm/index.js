@@ -129,35 +129,13 @@ class CreateRoomForm extends React.Component {
    createRoom = async (e) => {
       e.preventDefault();
 
-      const { user, createRoom } = this.props;
+      const { createRoom } = this.props;
       const { roomName, userList } = this.state;
 
-      let userIds = userList.forEach(user => {
-         return user.id
-      });
-
-      // let createRoomResponse = null;
-      // let joinRoomResponse = null;
-
-      // // Create Room
-      // try {
-      //    createRoomResponse = await user.createRoom({
-      //       name: roomName,
-      //       private: true,
-      //       addUserIds: userIds
-      //    });
-      // } catch (err) {
-      //    console.log(`Error: ${err}`);
-      // }
-
-      // // Join Room
-      // try {
-      //    joinRoomResponse = await user.joinRoom({
-      //       roomId: createRoomResponse.id
-      //    });
-      // } catch (err) {
-      //    console.log(`Error: ${err}`);
-      // }
+      let userIds = [];
+      for (let i = 0; i < userList.length; i++) {
+         userIds.push(userList[i].id);
+      }
 
       createRoom({
          name: roomName,

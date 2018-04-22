@@ -71,9 +71,11 @@ const LastMessageSentStyle = styled.span`
 
 const RoomMessageListItem = ({ roomDetail, actions }) => {
    this.joinRoom = (e) => {
-      if (roomDetail.room) {
-         actions.joinRoom(roomDetail.room);
-      }
+      //console.log(roomDetail.room);
+      actions.joinRoom(roomDetail.room);
+      // if (roomDetail.room) {
+      //    actions.joinRoom(roomDetail.room);
+      // }
    }
 
    return (

@@ -23,8 +23,6 @@ const ContainerList = styled.ul`
 
 const RoomMessageList = ({ rooms = [], user, messages, room, actions }) => {
 
-   //console.log('rooms', rooms);
-
    let roomHeaders = [];
    rooms.forEach(room => {
       const roomName = room.name;

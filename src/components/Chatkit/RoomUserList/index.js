@@ -63,13 +63,14 @@ const RoomUserList = ({ room }) => {
       <Container>
          <Header>Users</Header>
          <UnorderedList>
-            {room.users.map(user => (
-               <ListItem key={user.id}>
-                  <img src={user.avatarURL ? user.avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg"} alt={user.name} />
-                  <span>{user.name}</span>
-                  <PresenceIndicator isUserOnline={user.presence.state === "online" ? true : false} />
-               </ListItem>
-            ))}
+            {
+               room.users && room.users.map(user => (
+                  <ListItem key={user.id}>
+                     <img src={user.avatarURL ? user.avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg"} alt={user.name} />
+                     <span>{user.name}</span>
+                     <PresenceIndicator isUserOnline={user.presence.state === "online" ? true : false} />
+                  </ListItem>
+               ))}
          </UnorderedList>
       </Container>
    );

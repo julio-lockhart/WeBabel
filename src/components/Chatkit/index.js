@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { set, del } from "object-path-immutable";
+import Alert from 'react-s-alert';
 
 // Component
 import UserNavbar from "./UserNavbar";
@@ -13,7 +14,10 @@ import RoomMessageList from "./RoomMessageList";
 import CreateMessageInput from "./CreateMessageInput";
 import withAuthorization from "../Session/withAuthorization";
 
+// Styles
 import "./index.css";
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 // Chatkit
 import ChatManager from "../../chatkit";
@@ -23,7 +27,6 @@ const Container = styled.div`
   display    : flex;
   height     : 100vh;
   font-size  : 16px;
-  font-family: "Roboto", sans-serif;
   margin     : 0;
 `;
 
@@ -58,7 +61,25 @@ const ChatSection = styled.div`
   display         : flex;
   flex-direction  : column;
   position        : relative;
-  background-color: #FAFAFA;
+  background-color: rgba(250, 250, 250, 0.5);
+`;
+
+const Loader = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  border       : 16px solid #f3f3f3;       /* Light grey */
+  border-top   : 16px solid #3498db;       /* Blue */
+  border-radius: 50%;
+  width        : 120px;
+  height       : 120px;
+  animation    : spin 2s linear infinite;
+  
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+   }
 `;
 
 class ChatkitView extends React.Component {
@@ -114,7 +135,24 @@ class ChatkitView extends React.Component {
          !this.state.user.roomSubscriptions[room.id] &&
          this.state.user.subscribeToRoom({
             roomId: room.id,
-            hooks: { onNewMessage: this.actions.addMessage }
+            hooks: {
+               onNewMessage: this.actions.addMessage,
+               onUserLeft: payload => {
+                  Alert.error(`${payload.name} has left ${room.name}`, {
+                     position: 'top-right',
+                     effect: 'slide',
+                     timeout: 3000
+                  });
+
+                  if (this.state.room.id === room.id) {
+                     console.log("updating");
+
+                     this.setState({
+                        room
+                     });
+                  }
+               }
+            }
          }),
 
       createRoom: options =>
@@ -220,17 +258,16 @@ class ChatkitView extends React.Component {
    };
 
    render() {
-      const { user, room, messages, ready } = this.state;
+      const { user, room, messages, typing, ready } = this.state;
       const { createRoom, createConvo, removeUserFromRoom } = this.actions;
 
       if (!ready) {
-         return <div />;
+         return <Loader />;
       }
-
-      console.log('test', room.users[0].presence);
 
       return (
          <Container>
+            <Alert stack={{ limit: 3 }} />
             <Main>
                <SideBar>
                   <UserNavbar
@@ -246,7 +283,7 @@ class ChatkitView extends React.Component {
                </SideBar>
 
                <ChatSection>
-                  <RoomHeader room={room} />
+                  <RoomHeader user={user} room={room} actions={this.actions} typing={typing} />
                   <ChatMessageList user={user} messages={messages[room.id]} />
                   <CreateMessageInput user={user} room={room} />
                </ChatSection>

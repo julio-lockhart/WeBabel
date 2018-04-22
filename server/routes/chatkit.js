@@ -31,9 +31,9 @@ router.get("/getUserRoles/:userId", async (req, res) => {
    await chatkitServer.getUserRoles(id)
       .then((response) => {
          console.log(response);
+         res.status(200).json(response);
       }).catch((err) => {
          console.log('Error getting user details', err);
-
          res.status(400).json(response);
       });
 });
@@ -151,5 +151,31 @@ router.post("/createRoom", async (req, res) => {
       res.sendStatus(400);
    });
 });
+
+// --------------------------------------
+// Roles
+// --------------------------------------
+router.post("/assignRoomRoleToUser", async (req, res) => {
+   const userId = req.body.userId;
+   const roleName = req.body.roleName;
+   const roomId = req.body.roomId;
+
+   if (!userId) throw "ID required";
+   if (!roleName) throw "Role Name required";
+   if (!roomId) throw "Room ID required";
+
+   await chatkitServer.assignRoomRoleToUser({
+      userId: 'userId',
+      roleName: 'mycoolroomrole',
+      roomId: 234
+   })
+      .then(() => {
+         console.log('Assigned room role successfully');
+         res.sendStatus(200);
+      }).catch((err) => {
+         console.log(err);
+         res.json(err);
+      });
+})
 
 module.exports = router;
