@@ -13,6 +13,7 @@ import RoomUserList from "./RoomUserList";
 import RoomMessageList from "./RoomMessageList";
 import CreateMessageInput from "./CreateMessageInput";
 import withAuthorization from "../Session/withAuthorization";
+import getUrls from "get-urls";
 
 // Styles
 import "./index.css";
@@ -21,6 +22,7 @@ import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 // Chatkit
 import ChatManager from "../../chatkit";
+
 
 // Styled Components
 const Container = styled.div`
@@ -201,6 +203,11 @@ class ChatkitView extends React.Component {
       addMessage: payload => {
          const roomId = payload.room.id;
          const messageId = payload.id;
+
+         // Checking if text has any urls
+         const urls = getUrls(payload.text);
+         payload.urls = urls;
+
          this.setState(set(this.state, ["messages", roomId, messageId], payload));
 
          if (roomId === this.state.room.id) {

@@ -1,6 +1,8 @@
 import React from "react";
 import Moment from "react-moment";
+import Linkify from 'react-linkify';
 import styled from "styled-components";
+import MicrolinkCard from 'react-microlink';
 
 const Container = styled.div`
    min-height : 100px;
@@ -49,6 +51,7 @@ const MessageText = styled.div`
   border-radius: 25px;
   padding      : 20px;
   display      : inline-block;
+  margin-bottom: 8px;
   float        : ${props => props.isCurrentUser === true ? 'right' : '#left'};
 
   background-color: ${props => props.isCurrentUser === true ? '#2196F3' : '#EEEEEE'};
@@ -64,7 +67,13 @@ const PresenceIndicator = styled.div`
    border-radius        : 8px;
    margin-bottom        : 1px;
    
-   background           : ${props => props.isUserOnline ? 'lightgreen' : 'gray'};
+   background: ${props => props.isUserOnline ? 'lightgreen' : 'gray'};
+`;
+
+const CustomMicrolinkCard = styled(MicrolinkCard) `
+  max-width    : 100%;
+  border-radius: .42857em;
+  clear:both;
 `;
 
 const ChatMessageList = ({ message = {}, user }) => {
@@ -74,6 +83,7 @@ const ChatMessageList = ({ message = {}, user }) => {
    const senderName = message.userStore.store.store[senderId].name;
    const isUserOnline = message.sender.presence.state === 'online' ? true : false;
    const isCurrentUser = user.id === message.senderId;
+   const messageURLsArray = [...message.urls];
 
    return (
       <Container isCurrentUser={isCurrentUser}>
@@ -109,7 +119,18 @@ const ChatMessageList = ({ message = {}, user }) => {
 
             </MessageDetails>
 
-            <MessageText isCurrentUser={isCurrentUser}>{message.text}</MessageText>
+            <MessageText isCurrentUser={isCurrentUser}>
+               <Linkify properties={{ target: '_blank', style: { color: 'white', fontWeight: 'bold' } }}>{message.text}</Linkify>
+            </MessageText>
+
+            {
+               messageURLsArray.length === 1 ?
+                  <div>
+                     <CustomMicrolinkCard
+                        target='_blank'
+                        url={messageURLsArray[0]} />
+                  </div> : null
+            }
          </MessageContainer>
       </Container>
    );

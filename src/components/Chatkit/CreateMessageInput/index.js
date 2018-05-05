@@ -45,14 +45,16 @@ class CreateMessageInput extends React.Component {
       const { message } = this.state;
       const { user, room } = this.props;
 
-      user.sendMessage({
-         text: message,
-         roomId: room.id
-      });
+      if (message && message !== "") {
+         user.sendMessage({
+            text: message,
+            roomId: room.id
+         });
 
-      this.setState({
-         message: ""
-      });
+         this.setState({
+            message: ""
+         });
+      }
    };
 
    render() {
