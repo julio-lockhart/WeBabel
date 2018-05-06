@@ -6151,6 +6151,13 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-contexify@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-contexify/-/react-contexify-3.0.0.tgz#78492ac03bf172c7cbc5545b9c5337d551cccfe3"
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
+
 react-custom-scrollbars@^4.1.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/react-custom-scrollbars/-/react-custom-scrollbars-4.2.1.tgz#830fd9502927e97e8a78c2086813899b2a8b66db"

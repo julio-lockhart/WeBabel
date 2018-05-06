@@ -159,6 +159,7 @@ class ChatkitView extends React.Component {
          this.state.user.createRoom(options).then(this.actions.joinRoom),
 
       createConvo: options => {
+         console.log('options', options, options.user);
          if (options.user.id !== this.state.user.id) {
             const exists = this.state.user.rooms.find(
                x =>
@@ -180,12 +181,13 @@ class ChatkitView extends React.Component {
             .addUserToRoom({ userId, roomId })
             .then(this.actions.setRoom),
 
-      removeUserFromRoom: ({ userId, roomId = this.state.room.id }) =>
+      removeUserFromRoom: ({ userId, roomId = this.state.room.id }) => {
          userId === this.state.user.id
             ? this.state.user.leaveRoom({ roomId })
             : this.state.user
                .removeUserFromRoom({ userId, roomId })
-               .then(this.actions.setRoom),
+               .then(this.actions.setRoom)
+      },
 
       // --------------------------------------
       // Cursors
@@ -227,8 +229,8 @@ class ChatkitView extends React.Component {
          };
          const name = command.split(" ")[0];
          const args = command.split(" ").slice(1);
-         const exec = commands[name];
-         exec && exec(args).catch(console.log);
+         const exec = commands[name]
+         exec && exec(args)
       },
 
       scrollToEnd: e =>
@@ -293,7 +295,11 @@ class ChatkitView extends React.Component {
                   <CreateMessageInput user={user} room={room} />
                </ChatSection>
 
-               <RoomUserList room={room} />
+               <RoomUserList
+                  user={user}
+                  room={room}
+                  createConvo={createConvo}
+                  removeUserFromRoom={removeUserFromRoom} />
             </Main>
          </Container>
       );

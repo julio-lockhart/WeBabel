@@ -17,6 +17,7 @@
     "prop-types": "^15.6.1",
     "pusher-chatkit-server": "^0.10.0",
     "react": "^16.2.0",
+    "react-contexify": "^3.0.0",
     "react-dom": "^16.2.0",
     "react-giphy-select": "^1.0.3",
     "react-linkify": "^0.2.2",
