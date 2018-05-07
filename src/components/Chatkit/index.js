@@ -100,13 +100,6 @@ class ChatkitView extends React.Component {
 
    actions = {
       // --------------------------------------
-      // UI
-      // --------------------------------------
-
-      setSidebar: sidebarOpen => this.setState({ sidebarOpen }),
-      setUserList: userListOpen => this.setState({ userListOpen }),
-
-      // --------------------------------------
       // User
       // --------------------------------------
 
@@ -118,7 +111,6 @@ class ChatkitView extends React.Component {
 
       setRoom: room => {
          this.setState({ room, sidebarOpen: false });
-         this.actions.scrollToEnd();
       },
 
       removeRoom: room => this.setState({ room: {} }),
@@ -216,7 +208,6 @@ class ChatkitView extends React.Component {
             const cursor = this.state.user.readCursor({ roomId }) || {};
             const cursorPosition = cursor.position || 0;
             cursorPosition < messageId && this.actions.setCursor(roomId, messageId);
-            this.actions.scrollToEnd();
          }
       },
 
@@ -233,12 +224,6 @@ class ChatkitView extends React.Component {
 
          exec && exec(args);
       },
-
-      scrollToEnd: e =>
-         setTimeout(() => {
-            const elem = document.querySelector("#messages");
-            elem && (elem.scrollTop = 100000);
-         }, 0),
 
       // --------------------------------------
       // Typing Indicators
