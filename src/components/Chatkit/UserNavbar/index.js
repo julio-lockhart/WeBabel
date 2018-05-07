@@ -1,20 +1,45 @@
-import React from 'react';
+import React from "react";
 import {
-   Collapse,
-   Navbar,
-   NavbarToggler,
-   NavbarBrand,
-   Nav,
-   NavItem,
-   NavLink,
-   Button
-} from 'reactstrap';
+   ButtonGroup,
+   ButtonDropdown,
+   DropdownItem,
+   DropdownToggle,
+   DropdownMenu
+} from "reactstrap";
+import styled from "styled-components";
 
 // Component
-import SignOutButton from '../../Registrations/SignOut';
+import SignOutButton from "../../Registrations/SignOut";
+import CreateRoomForm from "../CreateRoomForm";
 
-// Resources
-import './index.module.css';
+// Styled Components
+const SidebarHeader = styled.header`
+  border-bottom   : 1px solid #e0e0e0;
+  z-index         : 1;
+  flex            : none;
+  display         : flex;
+  align-items     : center;
+  padding         : 1rem;
+  height          : 4.8rem;
+`;
+
+const UserName = styled.div`
+  font-size  : 1.2rem;
+  margin-left: 8px;
+  font-weight: normal;
+  color      : rgba(0, 0, 0, 0.38);
+`;
+
+const UserImage = styled.img`
+  width        : 2.8rem;
+  height       : 2.8rem;
+  border-radius: 0.38rem;
+  background   : #e0e0e0;
+`;
+
+const UserOptions = styled.div`
+  margin-left: auto;
+`;
 
 class UserNavbar extends React.Component {
    constructor(props) {
@@ -22,30 +47,24 @@ class UserNavbar extends React.Component {
 
       this.state = {
          user: this.props.user,
-         collapsed: true,
-         modal: false
+         dropdownOpen: false,
+         showModal: false
       };
 
-      // Binding
-      this.toggleNavbar = this.toggleNavbar.bind(this);
+      this.toggle = this.toggle.bind(this);
+      this.toggleModal = this.toggleModal.bind(this);
    }
 
-   // componentWillReceiveProps(newState) {
-   //    if (newState.user) {
-   //       if (this.state.user !== newState.user) {
-   //          this.setState({
-   //             user: newState.user
-   //          });
-   //       }
-   //    }
-   // }
-
-   // --------------------------------------
-   // toggleNavBar - launches options
-   // --------------------------------------
-   toggleNavbar() {
+   // Toggling the dropdown
+   toggle() {
       this.setState({
-         collapsed: !this.state.collapsed
+         dropdownOpen: !this.state.dropdownOpen
+      });
+   }
+
+   toggleModal() {
+      this.setState({
+         showModal: !this.state.showModal
       });
    }
 
@@ -53,54 +72,49 @@ class UserNavbar extends React.Component {
       const { user } = this.state;
 
       return (
-         <div className="user-navbar">
-            <Navbar light>
-               <NavbarBrand className="mr-auto">
-                  <div className="display">
-                     <img
-                        className="rounded-circle avatar"
-                        src={user.avatarURL ? user.avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg"}
-                        alt={"Photo of " + user.name} />
+         <div>
+            <SidebarHeader>
+               <UserImage
+                  className="rounded-circle"
+                  src={
+                     user.avatarURL
+                        ? user.avatarURL
+                        : "https://image.flaticon.com/icons/svg/149/149071.svg"
+                  }
+                  alt={"Photo of " + user.name} />
 
-                     <span className="username h5">{user.name}</span>
-                  </div>
-               </NavbarBrand>
+               <UserName>{user.name}</UserName>
 
-               <NavbarBrand>
-                  <Button
-                     color="link"
-                     className="create-room_button" />
-               </NavbarBrand>
+               <UserOptions>
+                  <ButtonGroup>
+                     <ButtonDropdown
+                        isOpen={this.state.dropdownOpen}
+                        toggle={this.toggle}
+                     >
+                        <DropdownToggle caret size="sm" />
+                        <DropdownMenu>
+                           <DropdownItem onClick={this.toggleModal}>Create a Room</DropdownItem>
+                           <DropdownItem>Account</DropdownItem>
+                           <DropdownItem divider />
+                           <DropdownItem>
+                              <SignOutButton />
+                           </DropdownItem>
+                        </DropdownMenu>
+                     </ButtonDropdown>
+                  </ButtonGroup>
+               </UserOptions>
+            </SidebarHeader>
 
-               <NavbarToggler
-                  onClick={this.toggleNavbar}
-                  className="mr-2" />
-
-               <Collapse
-                  isOpen={!this.state.collapsed}
-                  navbar>
-
-                  <Nav navbar>
-                     <NavItem>
-                        <NavLink>
-                           <Button
-                              color="primary"
-                              size="lg">Account</Button>
-                        </NavLink>
-                     </NavItem>
-
-                     <NavItem>
-                        <NavLink>
-                           <SignOutButton />
-                        </NavLink>
-                     </NavItem>
-                  </Nav>
-
-               </Collapse>
-            </Navbar>
+            {
+               this.state.showModal ?
+                  <CreateRoomForm
+                     isOpen={this.state.showModal}
+                     user={user}
+                     createRoom={this.props.createRoom} /> : null
+            }
          </div>
       );
-   };
-};
+   }
+}
 
 export default UserNavbar;
