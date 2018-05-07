@@ -26,6 +26,7 @@ export default async ({ state, actions }) => {
                   user.subscribeToRoom({
                      roomId: room.id,
                      hooks: { onNewMessage: actions.addMessage },
+                     messageLimit: 1,
                   })
                )
             ).then(rooms => {
