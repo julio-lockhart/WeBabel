@@ -1,25 +1,10 @@
 import React from "react";
-import styled from 'styled-components';
 
 // Components
 import RoomMessageListItem from '../RoomMessageListItem';
 
-// Styled Components
-const Container = styled.div`
-  margin                : 8px;
-  display               : -webkit-flex;
-  -webkit-flex-direction: column;
-  flex-direction        : column;
-`;
-
-const ContainerList = styled.ul`
-  flex        : 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  overflow-y  : auto;
-  min-height  : 0px;
-  padding     : 0;
-  margin      : 0;
-`;
+// Styles
+import { Container, ContainerList } from './style.js';
 
 const RoomMessageList = ({ rooms = [], user, messages, room, actions }) => {
 

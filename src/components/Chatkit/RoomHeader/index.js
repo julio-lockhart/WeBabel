@@ -1,30 +1,14 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu, Modal } from 'reactstrap';
-//import Modal from 'react-responsive-modal';
-import styled from 'styled-components';
+import {
+   Button, ButtonGroup, ButtonDropdown, DropdownItem,
+   DropdownToggle, DropdownMenu, Modal
+} from 'reactstrap';
 
 // Components
 import SearchUserForm from '../SearchUserForm/';
 
-const Container = styled.div`
-   border-bottom   : 1px solid #e0e0e0;
-   z-index         : 1;
-   display         : flex;
-   flex-direction  : row;
-   align-items     : center;
-   padding         : 1rem;
-   height          : 4.8rem;
-   background-color: white;
-`;
-
-const Title = styled.div`
-   margin: auto;
-`;
-
-const TypingIndicatorText = styled.div`
-   font-size : 0.7rem;
-   color     : rgba(0, 0, 0, 0.38);
-`;
+// Styles
+import { Container, Title, TypingIndicatorText } from './style.js';
 
 class RoomHeader extends Component {
    constructor(props) {
