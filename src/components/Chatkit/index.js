@@ -229,8 +229,9 @@ class ChatkitView extends React.Component {
          };
          const name = command.split(" ")[0];
          const args = command.split(" ").slice(1);
-         const exec = commands[name]
-         exec && exec(args)
+         const exec = commands[name];
+
+         exec && exec(args);
       },
 
       scrollToEnd: e =>
@@ -285,14 +286,21 @@ class ChatkitView extends React.Component {
                      rooms={user.rooms}
                      messages={messages}
                      room={room}
-                     actions={this.actions}
-                  />
+                     actions={this.actions} />
                </SideBar>
 
                <ChatSection>
-                  <RoomHeader user={user} room={room} actions={this.actions} typing={typing} />
-                  <ChatMessageList user={user} messages={messages[room.id]} />
-                  <CreateMessageInput user={user} room={room} />
+                  <RoomHeader
+                     user={user}
+                     room={room}
+                     actions={this.actions}
+                     typing={typing} />
+                  <ChatMessageList
+                     user={user}
+                     messages={messages[room.id]} />
+                  <CreateMessageInput
+                     user={user}
+                     room={room} />
                </ChatSection>
 
                <RoomUserList
