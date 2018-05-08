@@ -164,7 +164,8 @@ class ChatkitView extends React.Component {
          const urls = getUrls(payload.text);
          payload.urls = urls;
 
-         socket.emit("send_payload", payload);
+         const userId = this.state.user.id;
+         socket.emit("send_payload", { userId: userId, payload: payload });
 
          this.setState(set(this.state, ["messages", roomId, messageId], payload));
 

@@ -32,8 +32,9 @@ app.set('port', 3001);
 serverIO.on("connect", socket => {
    console.log('connected');
 
-   socket.on('send_payload', data => {
-      redisConnection.emit("message_received", data);
+   socket.on('send_payload', response => {
+      //console.log(response.userId, response.payload);
+      redisConnection.emit("message_received", response);
    })
 });
 
