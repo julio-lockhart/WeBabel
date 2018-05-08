@@ -1,5 +1,5 @@
 import React from "react";
-
+import io from "socket.io-client";
 import { connect } from "react-redux";
 import { compose } from "recompose";
 import { set, del } from "object-path-immutable";
@@ -24,6 +24,9 @@ import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 // Chatkit
 import ChatManager from "../../chatkit";
 
+const API_URL = "http://localhost:3001";
+let socket = null;
+
 class ChatkitView extends React.Component {
    constructor(props) {
       super(props);
@@ -37,6 +40,21 @@ class ChatkitView extends React.Component {
          ready: false
       };
    }
+
+   componentDidMount = async () => {
+      console.log("mounting");
+      try {
+         socket = io(`${API_URL}/server-IO`);
+      } catch (ex) {
+         console.log(ex);
+      }
+
+      ChatManager(this).then(res => {
+         this.setState({
+            ready: true
+         });
+      });
+   };
 
    actions = {
       // --------------------------------------
@@ -146,6 +164,8 @@ class ChatkitView extends React.Component {
          const urls = getUrls(payload.text);
          payload.urls = urls;
 
+         socket.emit("send_payload", payload);
+
          this.setState(set(this.state, ["messages", roomId, messageId], payload));
 
          if (roomId === this.state.room.id) {
@@ -184,14 +204,6 @@ class ChatkitView extends React.Component {
       // --------------------------------------
 
       setUserPresence: () => this.forceUpdate()
-   };
-
-   componentDidMount = async () => {
-      ChatManager(this).then(res => {
-         this.setState({
-            ready: true
-         });
-      });
    };
 
    render() {
