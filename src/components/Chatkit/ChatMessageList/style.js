@@ -8,7 +8,7 @@ export const Container = styled.div`
   flex-direction        : column-reverse;
 `;
 
-export const UnorderedList = styled.div`
+export const UnorderedList = styled.ul`
   padding   : 0;
   margin    : 0 16px;
   overflow-y: auto;

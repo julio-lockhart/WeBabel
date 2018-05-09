@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-   Button, ButtonGroup, ButtonDropdown, DropdownItem,
+   ButtonGroup, ButtonDropdown, DropdownItem,
    DropdownToggle, DropdownMenu, Modal
 } from 'reactstrap';
 
@@ -99,11 +99,6 @@ class RoomHeader extends Component {
             </Title>
 
             <ButtonGroup >
-               <Button>
-                  {
-                     room.users && room.users.length
-                  }
-               </Button>
                <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                   <DropdownToggle caret size="sm" />
 

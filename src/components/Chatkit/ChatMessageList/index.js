@@ -13,7 +13,7 @@ const ChatMessageList = ({ messages = {}, user }) => {
 
    return (
       <Container>
-         {Object.keys(messages).length > 0 ? (
+         {chatMessages && chatMessages.length > 0 ? (
             <UnorderedList>
                {chatMessages}
             </UnorderedList>
