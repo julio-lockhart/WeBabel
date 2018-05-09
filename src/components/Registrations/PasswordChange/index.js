@@ -22,6 +22,7 @@ class PasswordChangeForm extends Component {
    }
 
    onSubmit = (event) => {
+      event.preventDefault();
       const { password } = this.state;
 
       auth.doPasswordUpdate(password)
@@ -31,8 +32,6 @@ class PasswordChangeForm extends Component {
          .catch(error => {
             this.setState(updateByPropertyName('error', error));
          });
-
-      event.preventDefault();
    }
 
    render() {
@@ -48,7 +47,8 @@ class PasswordChangeForm extends Component {
                      <div className="card fat">
                         <div className="card-body">
                            <h4 className="card-title">Reset Password</h4>
-                           <form method="POST">
+
+                           <form method="POST" onSubmit={this.onSubmit}>
                               <div className="form-group">
                                  <label htmlFor="new-password">New Password</label>
                                  <input
@@ -57,13 +57,18 @@ class PasswordChangeForm extends Component {
                                     className="form-control"
                                     name="password"
                                     value={password}
+                                    onChange={event => this.setState(updateByPropertyName('password', event.target.value))}
                                     required autoFocus data-eye />
+
                                  <div className="form-text text-muted">
                                     Make sure your password is strong and easy to remember
                                  </div>
                               </div>
+
                               <div className="form-group no-margin">
-                                 <button type="submit" className="btn btn-primary btn-block">
+                                 <button
+                                    type="submit"
+                                    className="btn btn-primary btn-block">
                                     Reset Password
                                  </button>
                               </div>

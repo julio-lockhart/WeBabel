@@ -41,11 +41,9 @@ class RoomHeader extends Component {
    };
 
    onAddUserToRoom = (userList) => {
-      console.log('onAddUserToRoom', userList);
-
       const { actions } = this.props;
 
-      userList.map(user => {
+      userList.forEach(user => {
          actions.runCommand("invite " + user.id);
       })
 

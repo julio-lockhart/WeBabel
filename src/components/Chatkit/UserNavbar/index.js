@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import {
    ButtonGroup,
    ButtonDropdown,
@@ -6,6 +7,7 @@ import {
    DropdownToggle,
    DropdownMenu
 } from "reactstrap";
+import { ACCOUNT } from "../../../constants/routes";
 
 // Component
 import SignOutButton from "../../Registrations/SignOut";
@@ -62,12 +64,13 @@ class UserNavbar extends React.Component {
                   <ButtonGroup>
                      <ButtonDropdown
                         isOpen={this.state.dropdownOpen}
-                        toggle={this.toggle}
-                     >
+                        toggle={this.toggle}>
                         <DropdownToggle caret size="sm" />
                         <DropdownMenu>
                            <DropdownItem onClick={this.toggleModal}>Create a Room</DropdownItem>
-                           <DropdownItem>Account</DropdownItem>
+                           <DropdownItem>
+                              <Link to={ACCOUNT}>Account</Link>
+                           </DropdownItem>
                            <DropdownItem divider />
                            <DropdownItem>
                               <SignOutButton />

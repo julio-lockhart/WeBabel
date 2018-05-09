@@ -83,8 +83,6 @@ class SignInPage extends Component {
          .then(async (result) => {
             const isNewUser = result.additionalUserInfo.isNewUser;
             const user = result.user;
-            console.log(result);
-            console.log("From Popup", result.additionalUserInfo.isNewUser);
 
             if (isNewUser) {
                await db.doCreateUser(user.uid, user.displayName, user.email);
