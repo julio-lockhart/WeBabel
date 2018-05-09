@@ -42,7 +42,6 @@ class ChatkitView extends React.Component {
    }
 
    componentDidMount = async () => {
-      console.log("mounting");
       try {
          socket = io(`${API_URL}/server-IO`);
       } catch (ex) {
@@ -157,8 +156,6 @@ class ChatkitView extends React.Component {
       addMessage: payload => {
          const roomId = payload.room.id;
          const messageId = payload.id;
-
-         console.log("Adding new message", payload);
 
          // Checking if text has any urls
          const urls = getUrls(payload.text);

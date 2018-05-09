@@ -13,6 +13,8 @@ redisConnection.on("message_received", async (data, channel) => {
    const payload = data.payload;
    const message = {
       senderId: payload.senderId,
+      senderImage: payload.userStore.store.store[payload.senderId].avatarURL,
+      senderName: payload.userStore.store.store[payload.senderId].name,
       roomId: payload.roomId,
       text: payload.text,
       createdAt: payload.createdAt,
@@ -20,10 +22,8 @@ redisConnection.on("message_received", async (data, channel) => {
       urls: payload.urls
    }
 
-   console.log("User ID", userId);
-   console.log("message", message);
-   console.log("Key", `${userId}:${message.roomId}`);
-
-   //await client.lpushAsync(HISTORY_LIST, JSON.stringify(person));
-   //console.log('value', value);
+   if (userId) {
+      const redisKey = `${userId}:${message.roomId}`;
+      await client.lpushAsync(redisKey, JSON.stringify(message));
+   }
 });
