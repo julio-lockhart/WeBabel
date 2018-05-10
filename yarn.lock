@@ -6325,6 +6325,12 @@ react-error-overlay@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-4.0.0.tgz#d198408a85b4070937a98667f500c832f86bd5d4"
 
+react-firebase-file-uploader@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-firebase-file-uploader/-/react-firebase-file-uploader-2.4.1.tgz#ddf4d9f426bc9ab477be3aa754f50dd5defdeb31"
+  dependencies:
+    uuid "^2.0.3"
+
 react-giphy-select@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-giphy-select/-/react-giphy-select-1.0.3.tgz#f2f64e919af552f3925108fb962795b82c4e45ac"
@@ -7968,7 +7974,7 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
 
-uuid@^2.0.2:
+uuid@^2.0.2, uuid@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
 

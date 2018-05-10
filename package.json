@@ -21,6 +21,7 @@
       "react": "^16.2.0",
       "react-contexify": "^3.0.0",
       "react-dom": "^16.2.0",
+      "react-firebase-file-uploader": "^2.4.1",
       "react-giphy-select": "^1.0.3",
       "react-linkify": "^0.2.2",
       "react-microlink": "^2.0.3",

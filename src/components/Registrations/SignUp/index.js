@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { Alert, Fade } from 'reactstrap';
 
 // Resources
 import 'font-awesome/css/font-awesome.min.css';
-import { Alert } from 'reactstrap';
 import '../registrationStyle.css';
 import logo from '../img/logo.jpg';
 
 // Firebase
-import { auth, db } from '../../../firebase';
+import { auth, db, firebase } from '../../../firebase';
 import * as routes from '../../../constants/routes';
+import FileUploader from 'react-firebase-file-uploader';
 
 // Chatkit
 import { createUserOnChatkit } from '../../../chatkit';
@@ -20,10 +21,14 @@ const updateByPropertyName = (propertyName, value) => () => ({
 
 const INITIAL_STATE = {
    username: '',
+   avatar: '',
    email: '',
    passwordOne: '',
    passwordTwo: '',
-   error: null,
+   isUploading: false,
+   progress: 0,
+   avatarURL: '',
+   error: null
 };
 
 class SignUpPage extends Component {
@@ -33,11 +38,29 @@ class SignUpPage extends Component {
       this.state = { ...INITIAL_STATE };
    }
 
+   handleChangeUsername = (event) => this.setState({ username: event.target.value });
+
+   handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
+
+   handleProgress = (progress) => this.setState({ progress });
+
+   handleUploadError = (error) => {
+      this.setState({ isUploading: false });
+      console.error(error);
+   }
+
+   handleUploadSuccess = (filename) => {
+      this.setState({ avatar: filename, progress: 100, isUploading: false });
+      firebase.firebase.storage().ref('images').child(filename).getDownloadURL().then(url => this.setState({ avatarURL: url }));
+   };
+
+   // Create user in Firebase and Chatkit
    onSubmit = async (event) => {
       const {
          username,
          email,
-         passwordOne
+         passwordOne,
+         avatarURL
       } = this.state;
 
       const { history } = this.props;
@@ -46,13 +69,12 @@ class SignUpPage extends Component {
          .then(async (user) => {
             try {
                // Update User Profile
+               const imageURL = avatarURL ? avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg";
                await user.updateProfile({ displayName: username });
-               await db.doCreateUser(user.uid, user.displayName, user.email);
+               await db.doCreateUser(user.uid, user.displayName, user.email, imageURL);
 
                // Create User on Chatkit
-               const createResult = await createUserOnChatkit(user.uid, user.displayName, user.photoURL);
-               console.log("createResult status", createResult.status);
-               console.log("createResult", createResult.data);
+               await createUserOnChatkit(user.uid, user.displayName, imageURL);
 
                this.setState(() => ({ ...INITIAL_STATE }));
                history.push(routes.HOME);
@@ -76,6 +98,9 @@ class SignUpPage extends Component {
          passwordOne,
          passwordTwo,
          error,
+         isUploading,
+         progress,
+         avatarURL
       } = this.state;
 
       const isInvalid =
@@ -96,10 +121,45 @@ class SignUpPage extends Component {
                         <div className="card fat">
                            <div className="card-body">
                               <h4 className="card-title">Register for
-                                                                  <span> WeBabel</span>
+                                 <span> WeBabel</span>
                               </h4>
                               <form onSubmit={this.onSubmit}>
                                  <div className="form-group">
+
+                                    {
+                                       (!isUploading && progress === 100) &&
+                                       <img
+                                          src={avatarURL}
+                                          alt="Profile Upload"
+                                          style={{ height: '80px', width: '80px' }} />
+                                    }
+
+                                    <label
+                                       className="my-3 text-center"
+                                       style={{ backgroundColor: 'steelblue', color: 'white', padding: 10, borderRadius: 4, pointer: 'cursor' }}>
+                                       Upload a picture
+
+                                       <FileUploader
+                                          hidden
+                                          accept="image/*"
+                                          name="avatar"
+                                          randomizeFilename
+                                          storageRef={firebase.firebase.storage().ref('images')}
+                                          onUploadStart={this.handleUploadStart}
+                                          onUploadError={this.handleUploadError}
+                                          onUploadSuccess={this.handleUploadSuccess}
+                                          onProgress={this.handleProgress} />
+                                    </label>
+
+                                    {
+                                       isUploading &&
+                                       <Fade in={this.state.fadeIn} tag="h5" className="m-5">
+                                          <Alert color="primary">
+                                             Progress: {progress}
+                                          </Alert>
+                                       </Fade>
+                                    }
+
                                     <label htmlFor="name">Display Name</label>
                                     <input
                                        id="name"

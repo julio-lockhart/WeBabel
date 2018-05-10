@@ -2,10 +2,11 @@ import { db } from './firebase';
 
 // User API
 
-export const doCreateUser = async (id, username, email) =>
+export const doCreateUser = async (id, username, email, photoUrl) =>
    await db.ref(`users/${id}`).set({
       username,
       email,
+      photoUrl
    });
 
 export const onceGetUsers = () =>
