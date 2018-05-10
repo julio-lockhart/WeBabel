@@ -56,7 +56,7 @@ const ChatMessageList = ({ message = {}, user }) => {
             </MessageText>
 
             {
-               messageURLsArray.length === 1 ?
+               messageURLsArray.length > 0 ?
                   <div>
                      <CustomMicrolinkCard
                         target='_blank'

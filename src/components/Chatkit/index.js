@@ -13,7 +13,6 @@ import RoomUserList from "./RoomUserList";
 import RoomMessageList from "./RoomMessageList";
 import CreateMessageInput from "./CreateMessageInput";
 import withAuthorization from "../Session/withAuthorization";
-import getUrls from "get-urls";
 
 // Styles
 import "./index.css";
@@ -26,6 +25,7 @@ import ChatManager from "../../chatkit";
 
 const API_URL = "http://localhost:3001";
 let socket = null;
+let re = /\b(?:https?:\/\/)(\S+)\b/g;
 
 class ChatkitView extends React.Component {
    constructor(props) {
@@ -110,7 +110,6 @@ class ChatkitView extends React.Component {
          this.state.user.createRoom(options).then(this.actions.joinRoom),
 
       createConvo: options => {
-         console.log('options', options, options.user);
          if (options.user.id !== this.state.user.id) {
             const exists = this.state.user.rooms.find(
                x =>
@@ -157,8 +156,13 @@ class ChatkitView extends React.Component {
          const roomId = payload.room.id;
          const messageId = payload.id;
 
-         // Checking if text has any urls
-         const urls = getUrls(payload.text);
+         // Extract any urls 
+         let match;
+         let urls = [];
+         while ((match = re.exec(payload.text)) !== null) {
+            urls.push(match[0]);
+         }
+
          payload.urls = urls;
 
          const userId = this.state.user.id;

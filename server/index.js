@@ -30,7 +30,7 @@ configRoutes(app);
 app.set('port', 3001);
 
 serverIO.on("connect", socket => {
-   console.log('connected');
+   console.log('Socket Connected');
 
    socket.on('send_payload', response => {
       //console.log(response.userId, response.payload);
