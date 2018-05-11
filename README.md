@@ -1,6 +1,16 @@
 # WeBabel
 
-One Paragraph of project description goes here
+This is a web-based chat application developed using an SDK called [ChatKit](https://pusher.com/chatkit). This SDK provides an API that helps
+easily build chat features such as:
+
+- Group chat
+- One-to-one chat
+- Private chat
+- Typing indicators
+- "Who's online" presence
+- Historical messages
+
+[Firebase](https://firebase.google.com/) was used for user account creation and user authentication. The Firebase user UID is used to create a user on ChatKit.  
 
 ## Getting Started
 
@@ -8,7 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+To run locally, ensure that Node JS is installed.
 
 ```
 Give examples
@@ -16,45 +26,23 @@ Give examples
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
+This is a [Node.js](https://nodejs.org/) module available through the 
+[npm registry](https://www.npmjs.com/). It can be installed using the 
+[`npm`](https://docs.npmjs.com/getting-started/installing-npm-packages-locally)
+or 
+[`yarn`](https://yarnpkg.com/en/)
+command line tools.
 
-Say what the step will be
+### Running Locally
 
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+After cloning, open the command line and navigate to the root directory of the project. Then run
 
 ```
-Give an example
+yarn && yarn start
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+This will install the dependencies and start the application.
+Once you see, Your routes will be running on http://localhost:3000, then it means everything is ready. Navigate to that URL to begin using the project.
 
 ## Built With
 
