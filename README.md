@@ -31,6 +31,7 @@ command line tools.
 
 ### Running Locally
 
+The application is expecting Redis to be running on port 6379.
 After cloning, open the command line and navigate to the root directory of the project. Then run
 
 ```
