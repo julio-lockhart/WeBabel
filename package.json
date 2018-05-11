@@ -1,7 +1,18 @@
 {
    "name": "webabel-app",
    "version": "0.1.0",
+   "description": "Chat application using ChatKit from Pusher",
    "private": true,
+   "keywords": [
+      "nodejs",
+      "express",
+      "redis",
+      "chat",
+      "chatkit",
+      "firebase"
+   ],
+   "author": "Julio Lockhart",
+   "license": "MIT",
    "dependencies": {
       "@pusher/chatkit": "^0.7.8",
       "axios": "^0.18.0",

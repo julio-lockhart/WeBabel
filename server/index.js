@@ -33,7 +33,6 @@ serverIO.on("connect", socket => {
    console.log('Socket Connected');
 
    socket.on('send_payload', response => {
-      //console.log(response.userId, response.payload);
       redisConnection.emit("message_received", response);
    })
 });

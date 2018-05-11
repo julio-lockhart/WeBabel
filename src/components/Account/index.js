@@ -58,12 +58,10 @@ class AccountPage extends React.Component {
    onDoDeleteAccount = async () => {
       try {
          auth.doDeleteAccount().then(async () => {
-            const res = await apiInstance({
+            await apiInstance({
                method: "DELETE",
                url: `chatkit/deleteUser/${this.props.authUser.uid}`
             });
-
-            console.log(res);
          })
       } catch (e) {
          console.log(e);

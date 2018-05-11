@@ -85,10 +85,8 @@ class SignInPage extends Component {
             const user = result.user;
 
             if (isNewUser) {
-               await db.doCreateUser(user.uid, user.displayName, user.email);
-               const createResult = await createUserOnChatkit(user.uid, user.displayName, user.photoURL);
-               console.log("createResult status", createResult.status);
-               console.log("createResult", createResult.data);
+               await db.doCreateUser(user.uid, user.displayName, user.email, user.photoURL);
+               await createUserOnChatkit(user.uid, user.displayName, user.photoURL);
             }
 
             this.props.history.push(routes.HOME);
@@ -155,12 +153,6 @@ class SignInPage extends Component {
                                        value={password}
                                        onChange={event => this.setState(updateByPropertyName('password', event.target.value))}
                                        required data-eye />
-                                 </div>
-
-                                 <div className="form-group">
-                                    <label>
-                                       <input type="checkbox" name="remember" /> Remember Me
-                                                </label>
                                  </div>
 
                                  <div className="form-group no-margin">

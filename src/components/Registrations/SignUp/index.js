@@ -69,9 +69,12 @@ class SignUpPage extends Component {
          .then(async (user) => {
             try {
                // Update User Profile
+
                const imageURL = avatarURL ? avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg";
-               console.log('image url', imageURL);
-               await user.updateProfile({ displayName: username });
+               await user.updateProfile({
+                  displayName: username,
+                  photoURL: imageURL
+               });
                await db.doCreateUser(user.uid, user.displayName, user.email, imageURL);
 
                // Create User on Chatkit
