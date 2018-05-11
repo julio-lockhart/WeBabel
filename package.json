@@ -25,6 +25,7 @@
       "firebase": "^4.11.0",
       "font-awesome": "^4.7.0",
       "node-redis-pubsub": "^2.0.0",
+      "nodemon": "^1.17.4",
       "object-path-immutable": "^1.0.1",
       "prop-types": "^15.6.1",
       "pusher-chatkit-server": "^0.10.0",

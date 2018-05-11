@@ -25,6 +25,7 @@ import ChatManager from "../../chatkit";
 
 const API_URL = "http://localhost:3001";
 let socket = null;
+// Regex to pull URLs from a string
 let re = /\b(?:https?:\/\/)(\S+)\b/g;
 
 class ChatkitView extends React.Component {
@@ -55,6 +56,10 @@ class ChatkitView extends React.Component {
       });
    };
 
+   // --------------------------------------
+   // Chatkit Actions
+   // --------------------------------------
+
    actions = {
       // --------------------------------------
       // User
@@ -75,11 +80,6 @@ class ChatkitView extends React.Component {
       joinRoom: room => {
          this.actions.setRoom(room);
          this.actions.subscribeToRoom(room);
-         this.state.messages[room.id] &&
-            this.actions.setCursor(
-               room.id,
-               Object.keys(this.state.messages[room.id]).pop()
-            );
       },
 
       subscribeToRoom: room => {
@@ -101,9 +101,8 @@ class ChatkitView extends React.Component {
                         });
                      }
                   }
-               },
-               messageLimit: 1,
-            })
+               }
+            });
       },
 
       createRoom: options =>
@@ -140,15 +139,6 @@ class ChatkitView extends React.Component {
       },
 
       // --------------------------------------
-      // Cursors
-      // --------------------------------------
-
-      setCursor: (roomId, position) =>
-         this.state.user
-            .setReadCursor({ roomId, position: parseInt(position, 10) })
-            .then(x => this.forceUpdate()),
-
-      // --------------------------------------
       // Messages
       // --------------------------------------
 
@@ -169,12 +159,6 @@ class ChatkitView extends React.Component {
          socket.emit("send_payload", { userId: userId, payload: payload });
 
          this.setState(set(this.state, ["messages", roomId, messageId], payload));
-
-         if (roomId === this.state.room.id) {
-            const cursor = this.state.user.readCursor({ roomId }) || {};
-            const cursorPosition = cursor.position || 0;
-            cursorPosition < messageId && this.actions.setCursor(roomId, messageId);
-         }
       },
 
       runCommand: command => {

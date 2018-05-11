@@ -17,16 +17,9 @@ class SearchUserForm extends React.Component {
          userList: []
       };
 
-      this.toggle = this.toggle.bind(this);
       this.updateUserList = this.updateUserList.bind(this);
       this.runAction = this.runAction.bind(this);
    }
-
-   toggle() {
-      this.setState({
-         modal: !this.state.modal
-      });
-   };
 
    onEmailChange = event => {
       this.setState({
@@ -74,7 +67,7 @@ class SearchUserForm extends React.Component {
 
       return (
          <div>
-            <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+            <ModalHeader>Add User</ModalHeader>
 
             <ModalBody>
                <Form onSubmit={this.onSubmit}>
@@ -101,13 +94,13 @@ class SearchUserForm extends React.Component {
                   disabled={!userList.length > 0}
                   color="primary"
                   onClick={this.runAction}>{this.props.actionButtonContent}</Button>{' '}
-               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
          </div>
       );
    }
 }
 
+// Table display of users found when searching
 class FoundResult extends React.Component {
    constructor(props) {
       super(props);
