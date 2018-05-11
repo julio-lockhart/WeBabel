@@ -23,7 +23,7 @@ import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 // Chatkit
 import ChatManager from "../../chatkit";
 
-const API_URL = "https://webabel.herokuapp.com/:3001";
+const API_URL = "https://webabel.herokuapp.com:3001";
 let socket = null;
 let re = /\b(?:https?:\/\/)(\S+)\b/g;
 
