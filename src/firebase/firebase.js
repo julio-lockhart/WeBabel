@@ -1,12 +1,12 @@
 import * as firebase from 'firebase';
 
 const prodConfig = {
-   apiKey: "AIzaSyCScBol1J0HR_R4fauHtqBAmAkR0PQZ8Ik",
-   authDomain: "react-firebase-tutorial-49ed8.firebaseapp.com",
-   databaseURL: "https://react-firebase-tutorial-49ed8.firebaseio.com",
-   projectId: "react-firebase-tutorial-49ed8",
-   storageBucket: "react-firebase-tutorial-49ed8.appspot.com",
-   messagingSenderId: "862034296557"
+   apiKey: "AIzaSyBlHMeyWxVnrhr_RTGaAJe0isSisXPOtV8",
+   authDomain: "react-chat-d15a9.firebaseapp.com",
+   databaseURL: "https://react-chat-d15a9.firebaseio.com",
+   projectId: "react-chat-d15a9",
+   storageBucket: "react-chat-d15a9.appspot.com",
+   messagingSenderId: "912516577106"
 };
 
 if (!firebase.apps.length) {
