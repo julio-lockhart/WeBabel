@@ -85,7 +85,7 @@ class SignInPage extends Component {
             const user = result.user;
 
             if (isNewUser) {
-               await db.doCreateUser(user.uid, user.displayName, user.email);
+               await db.doCreateUser(user.uid, user.displayName, user.email, user.photoURL);
                const createResult = await createUserOnChatkit(user.uid, user.displayName, user.photoURL);
                console.log("createResult status", createResult.status);
                console.log("createResult", createResult.data);
