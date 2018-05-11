@@ -14,15 +14,11 @@ easily build chat features such as:
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Follow the instructions below to run the application.
 
 ### Prerequisites
 
 To run locally, ensure that Node JS is installed.
-
-```
-Give examples
-```
 
 ### Installing
 
