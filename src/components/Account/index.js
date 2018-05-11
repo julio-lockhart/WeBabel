@@ -100,7 +100,7 @@ class AccountPage extends React.Component {
                   <div>
                      <div className="text-center">
                         <img
-                           src={this.props.authUser.photoURL ? this.props.authUser.photoURL : 'https://image.flaticon.com/icons/svg/149/149071.svg'}
+                           src={this.props.authUser.photoURL}
                            className="rounded-circle"
                            alt={"Photo of " + this.props.authUser.displayName} />
                      </div>

@@ -24,7 +24,11 @@ const RoomMessageListItem = ({ roomDetail, actions }) => {
             <Grid>
                <DetailColumn side="left">
                   <RoomNameStyle>{roomDetail.roomName}</RoomNameStyle>
-                  <LastMessageSentStyle>{`${roomDetail.senderName}: ${roomDetail.latestMessage}`}</LastMessageSentStyle>
+                  <LastMessageSentStyle>
+                     {
+                        roomDetail.latestMessage ? `${roomDetail.senderName}: ${roomDetail.latestMessage}` : ""
+                     }
+                  </LastMessageSentStyle>
                </DetailColumn>
 
                <DetailColumn side="right">

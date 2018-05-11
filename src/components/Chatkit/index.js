@@ -216,6 +216,29 @@ class ChatkitView extends React.Component {
          return <Loader />;
       }
 
+      // If there are no rooms, only show the empty empty
+      // message list and the dropdown.
+      if (user.rooms.length === 0) {
+         return (
+            <Container>
+               <Alert stack={{ limit: 3 }} />
+               <Main>
+                  <SideBar>
+                     <UserNavbar
+                        user={user}
+                        createRoom={createRoom} />
+                     <RoomMessageList
+                        user={user}
+                        rooms={user.rooms}
+                        messages={messages}
+                        room={room}
+                        actions={this.actions} />
+                  </SideBar>
+               </Main>
+            </Container>
+         )
+      }
+
       return (
          <Container>
             <Alert stack={{ limit: 3 }} />

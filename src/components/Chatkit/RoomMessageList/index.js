@@ -39,9 +39,7 @@ const RoomMessageList = ({ rooms = [], user, messages, room, actions }) => {
 
          // If current user has an image, display it, otherwise, show 
          // temp user image
-         const currentUserAvatar = user.avatarURL
-            ? user.avatarURL
-            : "https://image.flaticon.com/icons/svg/149/149071.svg";
+         const currentUserAvatar = user.avatarURL;
 
          // URL of sender image
          const senderAvatar =
@@ -53,9 +51,7 @@ const RoomMessageList = ({ rooms = [], user, messages, room, actions }) => {
          const avatar =
             senderId === user.id
                ? currentUserAvatar
-               : senderAvatar
-                  ? senderAvatar
-                  : "https://image.flaticon.com/icons/svg/149/149071.svg";
+               : senderAvatar;
 
          const roomDetail = {
             room: room,
@@ -77,7 +73,7 @@ const RoomMessageList = ({ rooms = [], user, messages, room, actions }) => {
 
          const roomDetail = {
             room: room,
-            avatar: creatorAvatar ? creatorAvatar : "https://image.flaticon.com/icons/svg/149/149071.svg",
+            avatar: creatorAvatar,
             roomName,
             senderName: "",
             latestMessage: "",

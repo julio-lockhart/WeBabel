@@ -51,11 +51,7 @@ class UserNavbar extends React.Component {
             <SidebarHeader>
                <UserImage
                   className="rounded-circle"
-                  src={
-                     user.avatarURL
-                        ? user.avatarURL
-                        : "https://image.flaticon.com/icons/svg/149/149071.svg"
-                  }
+                  src={user.avatarURL}
                   alt={"Photo of " + user.name} />
 
                <UserName>{user.name}</UserName>

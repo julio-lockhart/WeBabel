@@ -22,11 +22,7 @@ const ChatMessageList = ({ message = {}, user }) => {
          <ImageContainer>
             <AvatarImage
                className="rounded-circle"
-               src={
-                  senderImage
-                     ? senderImage
-                     : "https://image.flaticon.com/icons/svg/149/149071.svg"
-               }
+               src={senderImage}
             />
          </ImageContainer>
 

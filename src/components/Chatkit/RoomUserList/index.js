@@ -34,7 +34,7 @@ const RoomUserList = ({ user, room, createConvo, removeUserFromRoom }) => {
                room.users && room.users.map(roomUserID => (
                   <ListItem key={roomUserID.id}>
                      <ContextMenuProvider data={roomUserID} id="menu_id">
-                        <img src={roomUserID.avatarURL ? roomUserID.avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg"} alt={roomUserID.name} />
+                        <img src={roomUserID.avatarURL} alt={roomUserID.name} />
                         <span>{roomUserID.name}</span>
                         <PresenceIndicator isUserOnline={roomUserID.presence.state === "online" ? true : false} />
                      </ContextMenuProvider>

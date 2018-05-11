@@ -70,6 +70,7 @@ class SignUpPage extends Component {
             try {
                // Update User Profile
                const imageURL = avatarURL ? avatarURL : "https://image.flaticon.com/icons/svg/149/149071.svg";
+               console.log('image url', imageURL);
                await user.updateProfile({ displayName: username });
                await db.doCreateUser(user.uid, user.displayName, user.email, imageURL);
 
